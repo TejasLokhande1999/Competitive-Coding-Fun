@@ -35,7 +35,7 @@
  }
 class Solution {
     public TreeNode addOneRow(TreeNode root, int val, int depth) {
-    /*
+    
         if(depth==1){
             TreeNode newNode = new TreeNode(val);
             newNode.left=root;
@@ -44,6 +44,7 @@ class Solution {
 
             Queue<Pair> q = new LinkedList<Pair>();
             ArrayList<Pair> list = new ArrayList<Pair>();
+            list.add(new Pair(root,1));
             q.add(new Pair(root,1));
 
             while(!q.isEmpty()){
@@ -70,67 +71,32 @@ class Solution {
         for(int i=0;i<list.size();i++){
             if(list.get(i).getDepth()==depth-1)
                 finalList.add(list.get(i));
+            System.out.print(list.get(i).getNode().val+":"+list.get(i).getDepth()+"   | ");
+               
         }
 
          for(int i=0;i<finalList.size();i++){
             Pair pair = finalList.get(i);
             TreeNode curr = pair.getNode();
+            
+            // Create new nodes that will be the new left and right children of 'curr'
+            TreeNode newLeft = new TreeNode(val);
+            TreeNode newRight = new TreeNode(val);
 
-            if(curr.left!=null){
-                TreeNode newNode = new TreeNode(val);
-                newNode.left=curr.left;
-                curr.left=newNode;
-                newNode.right=null;
-            }else if(curr.right!=null){
-                TreeNode newNode = new TreeNode(val);
-                newNode.right=curr.right;
-                curr.right=newNode;
-                newNode.left=null;
-            }
+            // Connect new nodes to the existing children of 'curr'
+            newLeft.left = curr.left;   // Attach existing left child to new left node
+            newRight.right = curr.right; // Attach existing right child to new right node
+
+            // Set new nodes as children of 'curr'
+            curr.left = newLeft;
+            curr.right = newRight;
 
         }
 
             return root;
 
         }
-*/
 
-          if (depth == 1) {
-            TreeNode newNode = new TreeNode(val);
-            newNode.left = root;
-            return newNode;
-        }
 
-        Queue<Pair> queue = new LinkedList<>();
-        queue.add(new Pair(root, 1));
-
-        while (!queue.isEmpty()) {
-            Pair pair = queue.poll();
-            TreeNode node = pair.getNode();
-            int currentDepth = pair.getDepth();
-
-            // Check if the next level is the desired depth - 1
-            if (currentDepth == depth - 1) {
-                // Insert new nodes
-                TreeNode tempLeft = node.left; // save existing left child
-                TreeNode tempRight = node.right; // save existing right child
-
-                node.left = new TreeNode(val); // create new left node
-                node.right = new TreeNode(val); // create new right node
-
-                node.left.left = tempLeft; // connect saved left child to new left node
-                node.right.right = tempRight; // connect saved right child to new right node
-            } else {
-                // Enqueue children to process at the next level
-                if (node.left != null) {
-                    queue.add(new Pair(node.left, currentDepth + 1));
-                }
-                if (node.right != null) {
-                    queue.add(new Pair(node.right, currentDepth + 1));
-                }
-            }
-        }
-
-        return root;
     }
 }
