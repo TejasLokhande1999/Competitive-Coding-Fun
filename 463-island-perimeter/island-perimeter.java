@@ -56,7 +56,7 @@ class Solution {
     //     perimeter+=dfs(i+1,j,grid);
             visit.add(p);
         int perimeter = 0;
-        perimeter += dfs(i, j + 1, grid);
+        perimeter = dfs(i, j + 1, grid);
         perimeter += dfs(i - 1, j, grid);
         perimeter += dfs(i, j - 1, grid);
         perimeter += dfs(i + 1, j, grid);
