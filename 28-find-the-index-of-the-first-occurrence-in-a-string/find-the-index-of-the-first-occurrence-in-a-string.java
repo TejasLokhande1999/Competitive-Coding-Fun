@@ -6,10 +6,10 @@ class Solution {
             if(haystack.equals(needle))
                 return 0;
         }else{
-            
+            String str="";
 
             for(int i=0;i<haystack.length()-needle.length()+1;i++){
-                String str = haystack.substring(i,i+needle.length());
+                str = haystack.substring(i,i+needle.length());
                 if(str.equals(needle))  
                     return i;
             }
