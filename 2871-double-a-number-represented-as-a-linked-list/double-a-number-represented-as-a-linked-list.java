@@ -35,10 +35,12 @@ class Solution {
         String traceStr = String.valueOf(number);
         System.out.println(number);
 
+        char ch= ' ';
+        int val=0;
         for(int i=0;i<traceStr.length();i++){
-            char ch = traceStr.charAt(i);
+            ch = traceStr.charAt(i);
             //int val = Integer.parseInt(traceStr.charAt(i));
-            int val=Character.getNumericValue(ch);  
+            val=Character.getNumericValue(ch);  
             if(headNode==null){
                 ListNode node = new ListNode(val);
                 headNode = node;
