@@ -1,22 +1,27 @@
 class Solution {
-    public int findPeakElement(int[] nums) {
+    public int findPeakElement(int[] arr) {
         
-    int newArr[] = new int[nums.length+2];
+        if(arr.length==1){
+            return 0;
+        }
 
-    newArr[0] = Integer.MIN_VALUE;
-    newArr[newArr.length-1] = Integer.MIN_VALUE;
-    for(int i=1;i<newArr.length-1;i++)
-    {
-        newArr[i] = nums[i-1];
-    }
-    for(int i=1;i<newArr.length-1;i++)
-        {
-            if(newArr[i]>newArr[i-1]&&newArr[i]>newArr[i+1])
-            {
-                return i-1;             //because of 0 based indexing
+        if(arr[0]>arr[1]){
+            return 0;
+        }
+
+        int n = arr.length;
+
+        if(arr[n-1]>arr[n-2]){
+            return n-1;
+        }
+
+        for(int i=1;i<n-1;i++){
+            if(arr[i]>arr[i-1] && arr[i]>arr[i+1]){
+                return i;
             }
         }
 
-        return 0;
+        return -1;
+
     }
 }
