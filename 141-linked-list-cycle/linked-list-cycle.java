@@ -12,15 +12,28 @@
 public class Solution {
     public boolean hasCycle(ListNode head) {
         
-        ListNode temp = head;
-        Set<ListNode> set = new HashSet<ListNode>();
+        // ListNode temp = head;
+        // Set<ListNode> set = new HashSet<ListNode>();
 
-        while(temp!=null){
-            if(set.contains(temp))
-                return true;
+        // while(temp!=null){
+        //     if(set.contains(temp))
+        //         return true;
             
-            set.add(temp);
-            temp=temp.next;
+        //     set.add(temp);
+        //     temp=temp.next;
+        // }
+
+        // return false;
+
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while(fast!=null && fast.next!=null){
+            slow = slow.next;
+            fast=fast.next.next;
+            if(slow.equals(fast)){
+                return true;
+            }
         }
 
         return false;
