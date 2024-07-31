@@ -14,29 +14,27 @@
  * }
  */
 class Solution {
+    List<Integer> list = new ArrayList<Integer>();
+
     public List<Integer> rightSideView(TreeNode root) {
         
-        List<Integer> list = new ArrayList<Integer>();
-        
-        rightView(root,0,list);
-
-    return list;
+        func(root,0);
+        return list;
 
     }
 
-    public void rightView(TreeNode node, int level, List<Integer> list){
+    public void func(TreeNode node, int currDepth){
 
-        if(node ==null){
+        if(node==null){
             return;
         }
 
-        if(list.size()==level){
+        if(currDepth==list.size()){
             list.add(node.val);
         }
 
-        rightView(node.right,level+1,list);
-        rightView(node.left,level+1,list);
+        func(node.right,currDepth+1);
+        func(node.left,currDepth+1);
 
     }
-
 }
