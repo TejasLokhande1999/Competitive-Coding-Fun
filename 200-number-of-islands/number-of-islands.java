@@ -1,64 +1,97 @@
 class Pair{
-    private int i;
-    private int j;
+    int row;
+    int col;
 
-    Pair(int i,int j){
-        this.i=i;
-        this.j=j;
+    Pair(int row, int col){
+        this.row=row;
+        this.col=col;
     }
 
-     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Pair pair = (Pair) obj;
-        return i == pair.i && j == pair.j;
-    }
-
-    @Override
-    public int hashCode() {
-        return 31 * i + j; // Simple hash code. Ensure it distributes well for your grid size.
-    }
 }
 
 class Solution {
-
-
-    public Set<Pair> visit = new HashSet<Pair>();
-
-
     public int numIslands(char[][] grid) {
         
-        int ans=0;
 
-        for(int i=0;i<grid.length;i++){
-            for(int j=0;j<grid[0].length;j++){
-                if(grid[i][j]=='1'){
-                    dfs(i,j,grid);
-                    ans+=1;
+        int m = grid.length;
+        int n = grid[0].length;
+        boolean visited[][] = new boolean[m][n];
+
+        int counter=0;
+
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j]=='1' && visited[i][j]==false){
+                    //apply bfs
+                    bfs(i,j,grid,visited,m,n);
+                    counter++;
                 }
             }
         }
 
-        return ans;
-        
+        return counter;
+
     }
 
-      public void dfs(int i, int j, char grid[][]){
-        if(i<0 || j<0 || i>=grid.length || j>=grid[0].length){
-            return;
+public void bfs(int i, int j, char grid[][], boolean visited[][], int m, int n) {
+    Queue<Pair> q = new LinkedList<>();
+    q.add(new Pair(i, j));
+    visited[i][j] = true;  // Mark as visited when adding to the queue
+
+    // Directions array for moving up, down, left, right
+    int[] dirRow = {-1, 1, 0, 0};
+    int[] dirCol = {0, 0, -1, 1};
+
+    while (!q.isEmpty()) {
+        Pair node = q.poll();
+        int row = node.row;
+        int col = node.col;
+
+        // Explore neighbors in four possible directions
+        for (int k = 0; k < 4; k++) {
+            int checkRow = row + dirRow[k];
+            int checkCol = col + dirCol[k];
+
+            // Check if the new position is within bounds, is land ('1'), and not visited yet
+            if (checkRow >= 0 && checkRow < m && checkCol >= 0 && checkCol < n && grid[checkRow][checkCol] == '1' && !visited[checkRow][checkCol]) {
+                q.add(new Pair(checkRow, checkCol));
+                visited[checkRow][checkCol] = true;  // Mark as visited when adding to the queue
+            }
         }
-        if(grid[i][j]!='1')
-            return;
-            
-        grid[i][j]='2';
-        dfs(i, j + 1, grid);
-        dfs(i - 1, j, grid);
-        dfs(i, j - 1, grid);
-        dfs(i + 1, j, grid);
-
     }
+}
 
+
+    // public void bfs(int i, int j, char grid[][], boolean visited[][], int m, int n){
+
+    //     Queue<Pair> q = new LinkedList<>();
+
+    //     q.add(new Pair(i,j));
+    //     int nrow[] = {-1,0,1,0};
+    //     int ncol[] = {0,1,0,-1};
+
+    //     while(!q.isEmpty()){
+
+    //         Pair node = q.poll();
+    //         int row = node.row;
+    //         int col = node.col;
+
+    //         visited[row][col] = true;
+    //         for(int k =0; k<4;k++){
     
+    //                  int checkRow = nrow[k] + row;
+    //                  int checkCol = ncol[k] + col;
 
+    //                 if(checkRow>=0 && checkRow<m && checkCol>=0 && checkCol<n && grid[checkRow][checkCol]=='1' && visited[checkRow][checkCol]==false){
+
+    //                   //    visited[checkRow][checkCol] = true;
+    //                     q.add(new Pair(checkRow,checkCol));
+    //                 }
+                
+    //         }
+
+    //     }
+
+
+    // }
 }
