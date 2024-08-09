@@ -33,65 +33,68 @@ class Solution {
 
     }
 
-public void bfs(int i, int j, char grid[][], boolean visited[][], int m, int n) {
-    Queue<Pair> q = new LinkedList<>();
-    q.add(new Pair(i, j));
-    visited[i][j] = true;  // Mark as visited when adding to the queue
+// public void bfs(int i, int j, char grid[][], boolean visited[][], int m, int n) {
+//     Queue<Pair> q = new LinkedList<>();
+//     q.add(new Pair(i, j));
+//     visited[i][j] = true;  // Mark as visited when adding to the queue
 
-    // Directions array for moving up, down, left, right
-    int[] dirRow = {-1, 1, 0, 0};
-    int[] dirCol = {0, 0, -1, 1};
+//     // Directions array for moving up, down, left, right
+//     int[] dirRow = {-1, 1, 0, 0};
+//     int[] dirCol = {0, 0, -1, 1};
 
-    while (!q.isEmpty()) {
-        Pair node = q.poll();
-        int row = node.row;
-        int col = node.col;
+//     while (!q.isEmpty()) {
+//         Pair node = q.poll();
+//         int row = node.row;
+//         int col = node.col;
 
-        // Explore neighbors in four possible directions
-        for (int k = 0; k < 4; k++) {
-            int checkRow = row + dirRow[k];
-            int checkCol = col + dirCol[k];
+//         // Explore neighbors in four possible directions
+//         for (int k = 0; k < 4; k++) {
+//             int checkRow = row + dirRow[k];
+//             int checkCol = col + dirCol[k];
 
-            // Check if the new position is within bounds, is land ('1'), and not visited yet
-            if (checkRow >= 0 && checkRow < m && checkCol >= 0 && checkCol < n && grid[checkRow][checkCol] == '1' && !visited[checkRow][checkCol]) {
-                q.add(new Pair(checkRow, checkCol));
-                visited[checkRow][checkCol] = true;  // Mark as visited when adding to the queue
-            }
-        }
-    }
-}
+//             // Check if the new position is within bounds, is land ('1'), and not visited yet
+//             if (checkRow >= 0 && checkRow < m && checkCol >= 0 && checkCol < n && grid[checkRow][checkCol] == '1' && !visited[checkRow][checkCol]) {
+//                 q.add(new Pair(checkRow, checkCol));
+//                 visited[checkRow][checkCol] = true;  // Mark as visited when adding to the queue
+//             }
+//         }
+//     }
+// }
 
 
-    // public void bfs(int i, int j, char grid[][], boolean visited[][], int m, int n){
+    public void bfs(int i, int j, char grid[][], boolean visited[][], int m, int n){
 
-    //     Queue<Pair> q = new LinkedList<>();
+        Queue<Pair> q = new LinkedList<>();
 
-    //     q.add(new Pair(i,j));
-    //     int nrow[] = {-1,0,1,0};
-    //     int ncol[] = {0,1,0,-1};
+        q.add(new Pair(i,j));
+        visited[i][j] = true;
 
-    //     while(!q.isEmpty()){
+        int[] nrow = {-1, 1, 0, 0};
+        int[] ncol = {0, 0, -1, 1};
 
-    //         Pair node = q.poll();
-    //         int row = node.row;
-    //         int col = node.col;
+        while(!q.isEmpty()){
 
-    //         visited[row][col] = true;
-    //         for(int k =0; k<4;k++){
+            Pair node = q.poll();
+            int row = node.row;
+            int col = node.col;
+
+            for(int k =0; k<4;k++){
     
-    //                  int checkRow = nrow[k] + row;
-    //                  int checkCol = ncol[k] + col;
+                     int checkRow = nrow[k] + row;
+                     int checkCol = ncol[k] + col;
 
-    //                 if(checkRow>=0 && checkRow<m && checkCol>=0 && checkCol<n && grid[checkRow][checkCol]=='1' && visited[checkRow][checkCol]==false){
+                    if(checkRow>=0 && checkRow<m && checkCol>=0 && checkCol<n && grid[checkRow][checkCol]=='1' && !visited[checkRow][checkCol]){
 
-    //                   //    visited[checkRow][checkCol] = true;
-    //                     q.add(new Pair(checkRow,checkCol));
-    //                 }
+                      //    visited[checkRow][checkCol] = true;
+                        q.add(new Pair(checkRow,checkCol));
+                                    visited[checkRow][checkCol] = true;
+
+                    }
                 
-    //         }
+            }
 
-    //     }
+        }
 
 
-    // }
+    }
 }
