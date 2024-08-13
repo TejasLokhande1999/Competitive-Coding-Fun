@@ -1,32 +1,49 @@
 class Solution {
     public void rotate(int[] nums, int k) {
-        if(nums.length==1 || k==0)
-        {
+        
+        //Approach 1 TLE
+
+        // int n = nums.length;
+        // k=k%n;
+        // for(int i=0;i<k;i++){
+
+        //     int last = nums[n-1];
+        //     int temp=nums[0];
+        //     int temp2;
+        //     for(int j=1;j<nums.length;j++){
+
+        //         temp2 = nums[j];
+        //         nums[j]=temp;
+        //         temp = temp2;
+
+        //     }
+        //     nums[0] = last;
+
+        // }
+
+
+        int n = nums.length;
+        k=k%n;
+        if(n==1){
             return;
         }
-        if(k>nums.length)
-        {
-            k=k%nums.length;
-        }
-        nums = reverseArr(nums, 0,nums.length-1);
-        nums = reverseArr(nums,0,k-1);
-        nums = reverseArr(nums,k,nums.length-1);
+        reverse(0,n-k-1,nums);
+        reverse(n-k,n-1,nums);
+        reverse(0,n-1,nums);
+        //reverse(0,k-1,nums);
+        //reverse(k,n-1,nums);
+
     }
 
-    public int[] reverseArr(int[] nums, int left, int right)
-    {
-        
-        int temp;
-        int mid = (left+right)/2;
-        while(left<=mid)
-        {
-            temp = nums[left];
-            nums[left] = nums[right];
-            nums[right] = temp;
-            left++;
-            right--;
-        }
+    public void reverse(int start, int end, int[] nums){
 
-        return nums;
-    }
+            while(start<end){
+                int temp = nums[start];
+                nums[start] = nums[end];
+                nums[end] = temp;
+                start++;
+                end--;
+            }
+
+        }
 }
