@@ -1,30 +1,4 @@
-class Pair{
-    private int i;
-    private int j;
-
-    Pair(int i,int j){
-        this.i=i;
-        this.j=j;
-    }
-
-     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Pair pair = (Pair) obj;
-        return i == pair.i && j == pair.j;
-    }
-
-    @Override
-    public int hashCode() {
-        return 31 * i + j; // Simple hash code. Ensure it distributes well for your grid size.
-    }
-}
-
 class Solution {
-
-  //  public int perimeter=0;
-    public Set<Pair> visit = new HashSet<Pair>();
     public int islandPerimeter(int[][] grid) {
         
         for(int i=0;i<grid.length;i++){
@@ -40,29 +14,28 @@ class Solution {
     }
 
     public int dfs(int i, int j, int grid[][]){
-        if(i<0 || j<0 || i>=grid.length || j>=grid[0].length || grid[i][j]==0){
+
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        if(i<0 || i>=rows || j<0 || j>=cols || grid[i][j]==0){
             return 1;
         }
-        Pair p = new Pair(i,j);
-        if(visit.contains(p)){
+
+        //check if visited. If visited, then rerurn 0
+        if(grid[i][j]==-1){
             return 0;
         }
 
-    // int perimeter=0;
-    //     visit.add(p);
-    //     perimeter=dfs(i,j+1,grid);
-    //     perimeter+= dfs(i-1,j,grid);
-    //     perimeter+=dfs(i,j-1,grid);
-    //     perimeter+=dfs(i+1,j,grid);
-            visit.add(p);
-        int perimeter = 0;
-        perimeter = dfs(i, j + 1, grid);
-        perimeter += dfs(i - 1, j, grid);
-        perimeter += dfs(i, j - 1, grid);
-        perimeter += dfs(i + 1, j, grid);
+        //marked as visited
+        grid[i][j]=-1;
 
-        return perimeter;
+        int p=0;
+        p+=dfs(i+1,j,grid);
+        p+=dfs(i-1,j,grid);
+        p+=dfs(i,j+1,grid);
+        p+=dfs(i,j-1,grid);
 
+        return p;
     }
-
 }
