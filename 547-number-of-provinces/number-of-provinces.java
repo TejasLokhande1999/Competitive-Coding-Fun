@@ -18,30 +18,32 @@ class Solution {
         }
 
         boolean visited[] = new boolean[V+1];
-
         int counter=0;
-        for(int i=1;i<=V;i++){      //because 1 based indexing
+        for(int i=1;i<=V;i++){
+
             if(!visited[i]){
                 dfs(i,adj,visited);
                 counter++;
             }
-        }   
-
+        }
 
         return counter;
 
     }
 
-    public void dfs(int node, ArrayList<ArrayList<Integer>> adj, boolean visited[]){
 
-        visited[node] = true;
+    public void dfs(int currNode, ArrayList<ArrayList<Integer>> adj, boolean visited[]){
 
-        ArrayList<Integer> list = adj.get(node);
+        visited[currNode] = true;
 
-        for(Integer currNode : list){
-            if(!visited[currNode]){
-                dfs(currNode,adj,visited);
+        ArrayList<Integer> list = adj.get(currNode);
+
+        for(int i=0;i<list.size();i++){
+            int node = list.get(i);
+            if(!visited[node]){
+                dfs(node,adj,visited);
             }
         }
+
     }
 }
