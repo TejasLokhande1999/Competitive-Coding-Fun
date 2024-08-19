@@ -26,59 +26,47 @@ class Solution {
                 return -1;
             }
         }
-        int visited[][] = new int[m][n];
 
-        int tmax = 0;
+        boolean visited[][] = new boolean[m][n];
 
         Queue<Pair> q = new LinkedList<Pair>();
+
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
                 if(grid[i][j]==2){
-                    q.add(new Pair(i,j,0));
+                    q.add(new Pair(i,j,0));         //put time =0;
                 }
             }
         }
 
-        
+        int tmax=0;
 
         while(!q.isEmpty()){
+            Pair p = q.poll();
 
-            Pair node = q.poll();
+            int row = p.row;
+            int col = p.col;
+            int time = p.time;
+            tmax = Math.max(tmax,time);
 
-            int row = node.row;
-            int col = node.col;
-            int time = node.time;
-
-            tmax = Math.max(time, tmax);
-
-            int nrow[] = {-1,0,1,0};
-            int ncol[] = {0,1,0,-1};
-
+            int nRow[] = {-1,0,1,0};
+            int nCol[]= {0,1,0,-1};
 
             for(int k=0;k<4;k++){
+                int checkRow = row + nRow[k];
+                int checkCol = col + nCol[k];
 
-                int checkRow = row + nrow[k];
-                int checkCol = col + ncol[k];
-
-                //check if out of bounds
-
-                if(checkRow>=0 && checkRow<m &&
-                   checkCol>=0 && checkCol<n &&
-                   grid[checkRow][checkCol]==1 && 
-                   visited[checkRow][checkCol]!=2){
-
-                    q.add(new Pair(checkRow, checkCol, time+1));
-                    visited[checkRow][checkCol]=2;
-
-                    }
-                
+                if(checkRow>=0 && checkRow<m && checkCol>=0 && checkCol<n && grid[checkRow][checkCol]==1){
+                    grid[checkRow][checkCol]=2;
+                    q.add(new Pair(checkRow,checkCol,time+1));
+                }
             }
-        }
 
+        }
 
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
-                if(grid[i][j]==1 && visited[i][j]!=2){
+                if(grid[i][j]==1){
                     return -1;
                 }
             }
