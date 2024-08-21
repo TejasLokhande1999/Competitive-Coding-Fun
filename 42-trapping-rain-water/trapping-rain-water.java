@@ -1,30 +1,28 @@
 class Solution {
-    public int trap(int[] height) {
+    public int trap(int[] arr) {
         
-        int gel[] = new int[height.length];
-        int ger[] = new int[height.length];
+        int n = arr.length;
 
+        int arrR[] = new int[n];
+        int arrL[] = new int[n];
 
-        Stack<Integer> s = new Stack<>();
-        int maxL = height[0];
-        for(int i=0;i<height.length;i++){
-            gel[i] = Math.max(maxL,height[i]);
-            maxL = Math.max(maxL,height[i]);
+        int maxL = Integer.MIN_VALUE;
+        int maxR = Integer.MIN_VALUE;
+
+        for(int i=0;i<n;i++){
+            arrL[i] = Math.max(maxL,arr[i]);
+            maxL = Math.max(maxL,arr[i]);
         }
 
-        int n = height.length;
-        int maxR= height[n-1];
-
-        for(int i=height.length-1;i>=0;i--){
-            ger[i] = Math.max(maxR,height[i]);
-            maxR =  Math.max(maxR,height[i]);       
+        for(int i=n-1;i>=0;i--){
+            arrR[i] = Math.max(arr[i],maxR);
+            maxR = Math.max(maxR,arr[i]);
         }
 
+        int sum=0;
 
-        int sum =0;
-
-        for(int i=0;i<height.length;i++){
-            sum += Math.min(gel[i],ger[i]) - height[i];
+        for(int i=0;i<n;i++){
+            sum+= Math.min(arrL[i],arrR[i])-arr[i];
         }
 
         return sum;
