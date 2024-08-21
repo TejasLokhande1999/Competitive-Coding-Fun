@@ -35,7 +35,7 @@ class MyStack {
         int top = q1.peek();
         q2.add(q1.poll());
 
-        while(q2.size()!=0){
+        while(!q2.isEmpty()){
             q1.add(q2.poll());
         }
         return top;
