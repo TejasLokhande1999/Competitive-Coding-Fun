@@ -24,8 +24,8 @@ class Solution {
             return 0;
         }
 
-        int hgt = 1+Math.max(height(node.left),height(node.right));
-        return hgt;
-
+        int lh = height(node.left);
+        int rh = height(node.right);
+        return 1+Math.max(lh,rh);
     }
 }
