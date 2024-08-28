@@ -15,45 +15,43 @@
  */
 class Solution {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        
+        Queue<TreeNode> q = new LinkedList<>();
         List<List<Integer>> list = new ArrayList<>();
 
-        boolean isOdd = true;
-        if(root==null)
+        if(root==null){
             return list;
-
-        Queue<TreeNode> q = new LinkedList<TreeNode>();
-
-
+        }
         q.add(root);
-        int counter=0;
 
         while(!q.isEmpty()){
             int levelNo = q.size();
-
-            List<Integer> temp = new ArrayList<Integer>();
-
+            List<Integer> subList = new ArrayList<Integer>();
             for(int i=0;i<levelNo;i++){
-                if(q.peek().left!=null)
-                    q.add(q.peek().left);
-
-                if(q.peek().right!=null)
-                    q.add(q.peek().right);
-
-                //Just chekc the level
-                if(counter%2==0){
-                    temp.add(q.poll().val);
-                }else{
-                    temp.add(0,q.poll().val);
+                TreeNode front = q.poll();
+                if(front.left!=null){
+                    q.add(front.left);
                 }
+                if(front.right!=null){
+                    q.add(front.right);
+                }
+                subList.add(front.val);
             }
-
-            counter+=1;
-
-            list.add(temp);
-
+            list.add(subList);
         }
 
-        return list;
+        boolean even = true;
+
+        List<List<Integer>> retList = new ArrayList<>();
+        for(int i=0;i<list.size();i++){
+            List<Integer> temp = list.get(i);
+            if(i%2==0){
+                retList.add(temp);
+            }else{
+                Collections.reverse(temp);
+                retList.add(temp);
+            }
+        }
+
+        return retList;
     }
 }
