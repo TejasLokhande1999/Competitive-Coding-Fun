@@ -14,27 +14,44 @@
  * }
  */
 class Solution {
-    List<Integer> list = new ArrayList<Integer>();
-
     public List<Integer> rightSideView(TreeNode root) {
-        
-        func(root,0);
-        return list;
+        Queue<TreeNode> q = new LinkedList<>();
+        List<List<Integer>> list = new ArrayList<>();
+        if(root==null){
+            return new ArrayList<>();
 
-    }
+        }
+        q.add(root);
+        while(!q.isEmpty()){
 
-    public void func(TreeNode node, int currDepth){
+            int levelNo = q.size();
+            List<Integer> subList = new ArrayList<Integer>();
 
-        if(node==null){
-            return;
+            for(int i=0;i<levelNo;i++){
+                TreeNode front = q.poll();
+
+                if(front.left!=null){
+                    q.add(front.left);
+                }
+
+                if(front.right!=null){
+                    q.add(front.right);
+                }
+
+                subList.add(front.val);
+            }
+
+            list.add(subList);
         }
 
-        if(currDepth==list.size()){
-            list.add(node.val);
+        List<Integer> retList =new ArrayList<>();
+
+        for(int i=0;i<list.size();i++){
+            List<Integer> temp = list.get(i);
+            retList.add(temp.get(temp.size()-1));
         }
 
-        func(node.right,currDepth+1);
-        func(node.left,currDepth+1);
+        return retList;
 
     }
 }
