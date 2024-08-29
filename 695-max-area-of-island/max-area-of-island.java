@@ -7,7 +7,7 @@ class Solution {
         boolean visited[][] = new boolean[m][n];
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
-                if(grid[i][j]==1){
+                if(grid[i][j]==1 &&!visited[i][j]){
                     count[0]=0;
                     dfs(i,j,grid,visited,count);
                     max=Math.max(count[0],max);
