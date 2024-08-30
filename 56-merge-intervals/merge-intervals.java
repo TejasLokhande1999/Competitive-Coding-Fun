@@ -1,60 +1,50 @@
 class Solution {
     public int[][] merge(int[][] intervals) {
-        
-        if(intervals.length==1){
-            return intervals;
-        }
-        ArrayList<Pair> list = new ArrayList<>();
+        int m = intervals.length;
 
-        for(int i=0;i<intervals.length;i++){
-            int x = intervals[i][0];
-            int y = intervals[i][1];
-
-            list.add(new Pair(x,y));
+        List<Pair> list =new ArrayList<>();
+        for(int i=0;i<m;i++){
+            list.add(new Pair(intervals[i][0],intervals[i][1]));
         }
 
-    Collections.sort(list, new PairComparator());
+        Collections.sort(list, new PairComparator());
 
-
-    ArrayList<Pair> retList = new ArrayList<Pair>();
-
-    Pair p1 = list.get(0);
-    int ele1 = p1.x;
-    int ele2=p1.y;
-    for(int i=1;i<list.size();i++){
-        Pair p = list.get(i);
-        if(p.x<=ele2){
-
-            if(p.y>ele2){
-                ele2=p.y;
+        int start = list.get(0).x;
+        int end = list.get(0).y;
+        ArrayList<Pair> result = new ArrayList<>();
+        for(int i=0;i<list.size();i++){
+            Pair p = list.get(i);
+            int currStart = p.x;
+            int currEnd = p.y;
+            if(end>=currStart){
+                end = Math.max(end,currEnd);
+            }else{
+                result.add(new Pair(start,end));
+                start = p.x;
+                end = p.y;
             }
-
-        }else{  //start a new interval
-            retList.add(new Pair(ele1,ele2));
-            ele1 = p.x;
-            ele2 = p.y;
         }
+
+        result.add(new Pair(start,end));
+
+        int n = result.size();
+
+        int mat[][] = new int[n][2];
+
+        for(int i=0;i<n;i++){
+            mat[i][0] = result.get(i).x;
+            mat[i][1] = result.get(i).y;
+        }   
+
+        return mat;
     }
-
-    retList.add(new Pair(ele1,ele2));
-
-    int mat[][] = new int[retList.size()][2];
-
-    for(int i=0;i<retList.size();i++){
-        mat[i][0] = retList.get(i).x;
-        mat[i][1] = retList.get(i).y;
-    }
-
-    return mat;
-}
 }
 
 class Pair{
-
     int x;
     int y;
     Pair(int x, int y){
-        this.x = x;
+        this.x=x;
         this.y=y;
     }
 }
@@ -62,13 +52,19 @@ class Pair{
 class PairComparator implements Comparator<Pair>{
 
     public int compare(Pair p1, Pair p2){
-
         if(p1.x>p2.x){
             return 1;
         }else if(p1.x<p2.x){
             return -1;
-        }else{          //p1.x==p2.x;
-            return 0;
+        }else{
+            //tie
+            if(p1.y>p2.y){
+                return 1;
+            }else if(p1.y<p2.y){
+                return -1;
+            }else{
+                return 0;
+            }
         }
     }
 
