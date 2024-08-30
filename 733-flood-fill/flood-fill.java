@@ -1,29 +1,35 @@
 class Solution {
-    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
-        int initialColor = image[sr][sc];
-        if(initialColor!=color)
-            dfs(image,sr,sc,color,initialColor);
+    public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
+        
+        int oldColor= image[sr][sc];
+
+        if(oldColor==newColor){
+            return image;
+        }else{
+            dfs(sr,sc,image,oldColor,newColor);
+        }
+
         return image;
     }
 
-    public void dfs(int image[][], int i, int j, int color, int initialColor){
+    public void dfs(int row, int col, int[][] grid, int oldColor, int newColor){
 
-    //base condition
-    int row = image.length;
-    int col = image[0].length;
+        int m = grid.length;
+        int n = grid[0].length;
 
-    if(i<0 || i>=row || j<0 || j>=col || image[i][j]!=initialColor){
-        return;
+        if(row<0 || row>=m || col<0 || col>=n || grid[row][col]!=oldColor){
+            return;
+        }
+
+        grid[row][col]=newColor;
+
+        dfs(row+1,col,grid,oldColor,newColor);
+        dfs(row-1,col,grid,oldColor,newColor);
+        dfs(row,col+1,grid,oldColor,newColor);
+        dfs(row,col-1,grid,oldColor,newColor);
+
+
+
+
     }
-
-    image[i][j]=color;
-
-    dfs(image,i+1,j,color,initialColor);
-    dfs(image,i-1,j,color,initialColor);
-    dfs(image,i,j+1,color,initialColor);
-    dfs(image,i,j-1,color,initialColor);
-
-    }
-
-
 }
