@@ -18,7 +18,13 @@ class Solution {
 
             map.get(mapStr).add(str);
         }
+        List<List<String>> retList = new ArrayList<>();
 
-        return new ArrayList<> (map.values());
+        for(Map.Entry<String, List<String>> entry : map.entrySet()){    
+        retList.add(entry.getValue());
+
+        }
+
+        return retList;
     }
 }
