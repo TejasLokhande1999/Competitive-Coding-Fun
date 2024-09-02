@@ -25,7 +25,6 @@ class Solution {
             return false;
         }
 
-        //return true;
         return isBalanced(root.left)&&isBalanced(root.right);
 
 
