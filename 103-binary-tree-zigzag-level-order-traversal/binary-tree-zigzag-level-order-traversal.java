@@ -15,43 +15,37 @@
  */
 class Solution {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-        Queue<TreeNode> q = new LinkedList<>();
-        List<List<Integer>> list = new ArrayList<>();
+    List<List<Integer>> list = new ArrayList<>();
+    if(root==null){
+        return list;
+    }
+     Queue<TreeNode> q = new LinkedList<>();
 
-        if(root==null){
-            return list;
-        }
-        q.add(root);
+     q.add(root);
 
-        while(!q.isEmpty()){
-            int levelNo = q.size();
-            List<Integer> subList = new ArrayList<Integer>();
-            for(int i=0;i<levelNo;i++){
-                TreeNode front = q.poll();
-                if(front.left!=null){
-                    q.add(front.left);
-                }
-                if(front.right!=null){
-                    q.add(front.right);
-                }
+    int counter=0;
+     while(!q.isEmpty()){
+        int levelNo = q.size();
+        List<Integer> subList = new ArrayList<>();
+
+        for(int i=0;i<levelNo;i++){
+            TreeNode front = q.poll();
+            if(front.left!=null)
+                q.add(front.left);
+
+            if(front.right!=null)
+                q.add(front.right);
+            
+            if(counter%2==0)
                 subList.add(front.val);
-            }
-            list.add(subList);
+            else
+                subList.add(0,front.val);
         }
+        counter++;
+        list.add(subList);
+     }
 
-        boolean even = true;
+     return list;
 
-        List<List<Integer>> retList = new ArrayList<>();
-        for(int i=0;i<list.size();i++){
-            List<Integer> temp = list.get(i);
-            if(i%2==0){
-                retList.add(temp);
-            }else{
-                Collections.reverse(temp);
-                retList.add(temp);
-            }
-        }
-
-        return retList;
     }
 }
