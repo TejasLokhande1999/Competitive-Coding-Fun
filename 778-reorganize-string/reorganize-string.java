@@ -7,31 +7,53 @@ class Solution {
             map.put(ch,map.getOrDefault(ch,0)+1);
         }
 
-    PriorityQueue<Pair> maxH = new PriorityQueue(new PairComparator());
+    PriorityQueue<Pair> pq = new PriorityQueue(new PairComparator());
 
     for(Map.Entry<Character,Integer> entry : map.entrySet()){
-        maxH.add(new Pair(entry.getKey(),entry.getValue()));
+        pq.add(new Pair(entry.getKey(),entry.getValue()));
     }
     int n = s.length();
     StringBuilder retStr = new StringBuilder();
+
     Pair prev = new Pair('#',-1);
-    while(!maxH.isEmpty()){
-        Pair current = maxH.poll();
+    while(!pq.isEmpty()){
+        Pair curr = pq.poll();
 
-        //current.ch;
+        // if(curr.ch==prev.ch){
+        //     return "";
+        // }
+        // retStr.append(curr.ch);
 
-        retStr.append(current.ch);
-        current.freq--;
+        // if(prev.freq>0){
+        //     pq.add(prev);
+        // }
+        // char ch = curr.ch;
+        // map.put(ch,map.getOrDefault(ch,0)-1);
+        // curr.freq=curr.freq-1;
+        // prev = curr;
+ // If the current character is the same as the previous, return empty string (impossible case)
+            if (curr.ch == prev.ch && prev.freq > 0) {
+                return "";
+            }
 
-        if(prev.freq>0){
-            maxH.add(prev);
+            // Append current character to result
+            retStr.append(curr.ch);
 
-        }
-        prev = current;
- 
+            // Reduce the frequency of the current character
+            curr.freq--;
+
+            // If previous character still has frequency, re-add it to the queue
+            if (prev.freq > 0) {
+                pq.add(prev);
+            }
+
+            // Update previous character to the current one
+            prev = curr;
+
+
+
     }
-
-    if(retStr.length()==n)
+    if(retStr.length()==s.length())
         return retStr.toString();
 
     return "";
