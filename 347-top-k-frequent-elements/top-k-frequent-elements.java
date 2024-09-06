@@ -1,52 +1,47 @@
 class Solution {
     public int[] topKFrequent(int[] nums, int k) {
-        Map<Integer, Integer> map = new HashMap<Integer,Integer>();
-
+        Map<Integer, Integer> map = new HashMap<>();
 
         for(int i=0;i<nums.length;i++){
             map.put(nums[i], map.getOrDefault(nums[i],0)+1);
         }
 
-        //We have generated a map
+        PriorityQueue<Pair> pq = new PriorityQueue<>(new PairComparator());
+    
 
-        PriorityQueue<Pair> pq = new PriorityQueue<Pair>(new PairComparator());
+    for(Map.Entry<Integer, Integer> entry : map.entrySet()){
 
-        for(Map.Entry<Integer,Integer> entry : map.entrySet()){
+        pq.add(new Pair(entry.getKey(), entry.getValue()));
 
-            pq.add(new Pair(entry.getValue(),entry.getKey()));
-
-            if(pq.size()>k){
-                pq.poll();
-            }
+        if(pq.size()>k){
+            pq.poll();
         }
-
-        int arr[] = new int [k];
-
-        int i=0;
-        while(!pq.isEmpty()){
-            arr[i] = pq.poll().ele; 
-            i++;
-        }
-
-        return arr;
 
     }
 
+    int retArr[] = new int[pq.size()];
+    int i=0;
+    while(!pq.isEmpty()){
+        retArr[i]=pq.poll().key;
+        i+=1;
+    }
+
+    return retArr;
+}
 }
 
 class Pair{
+    int key;
     int freq;
-    int ele;
-    Pair(int freq, int ele){
-        this.freq = freq;
-        this.ele=ele;
+
+    Pair(int key, int freq){
+        this.key=key;
+        this.freq=freq;
     }
 }
 
 class PairComparator implements Comparator<Pair>{
-
     public int compare(Pair p1, Pair p2){
-
         if(p1.freq>p2.freq){
             return 1;
         }else if(p1.freq<p2.freq){
@@ -54,6 +49,5 @@ class PairComparator implements Comparator<Pair>{
         }else{
             return 0;
         }
-
     }
 }
