@@ -1,28 +1,30 @@
 class Solution {
     List<List<Integer>> res = new ArrayList<>();
-    public List<List<Integer>> combinationSum(int[] arr, int target) {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
         
-        List<Integer> list = new ArrayList<>();
-        dfs(target,arr,list,0);
+        ArrayList<Integer> list = new ArrayList<>();
+        dfs(candidates, target, 0, list);
         return res;
-        
     }
 
-    public void dfs(int target,int arr[], List<Integer> list, int index){
+        public void dfs(int arr[], int target, int index, ArrayList<Integer> list){
+            if(target==0){
+                res.add(new ArrayList<>(list));
+            }else if(target<0 || index ==arr.length){
+                return;
+            }else{
+                list.add(arr[index]);
+        
+                dfs(arr,target-arr[index],index,list);
 
-        if(target==0){
-            res.add(new ArrayList<>(list));
-        }else if(index==arr.length || target<0){
-            return;
-        }else{
+                list.remove(list.size()-1);
 
-            //I did not increment the index
-            list.add(arr[index]);
-            dfs(target-arr[index],arr,list,index);
+                dfs(arr,target,index+1,list);
 
-            list.remove(list.size()-1);
-            dfs(target,arr,list,index+1);
+            }
         }
 
-    }
+
+
+
 }
