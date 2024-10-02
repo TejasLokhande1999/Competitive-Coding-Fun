@@ -1,37 +1,34 @@
 class Solution {
+    List<List<Integer>> res = new ArrayList<>();
     public List<List<Integer>> permute(int[] nums) {
         
-        List<List<Integer>> list = new ArrayList<>();
-
-        permutations(0,nums.length,nums,list);
-
-        return list;
+        List<Integer> list = new ArrayList<>();
+        boolean used[] = new boolean[nums.length];
+        dfs(nums,list,used);
+        return res;
     }
 
-    public void permutations(int index, int n, int nums[], List<List<Integer>> list){
-
-        if(index==n){       //WE reached the end
-            ArrayList<Integer> temp = new ArrayList<Integer>();
-
+    public void dfs(int nums[], List<Integer> list, boolean used[]){
+        if(list.size()==nums.length){
+            res.add(new ArrayList<>(list));
+            return;
+        }else{
+            
             for(int i=0;i<nums.length;i++){
-                temp.add(nums[i]);
-            }   
+                if(used[i]){
+                    continue;
+                }else{
+                    used[i] = true;
+                    list.add(nums[i]);
+                    dfs(nums,list,used);
 
-            list.add(temp);
+                    //backtracking step
+                    used[i] = false;
+                    list.remove(list.size()-1);
+
+                }
+            }
 
         }
-
-        for(int i=index;i<n;i++){
-            swap(index,i, nums);
-            permutations(index+1,n,nums,list);
-            swap(index,i,nums);
-        }
-
     }
-
-        public void swap(int i, int j, int nums[]){
-            int temp = nums[i];
-            nums[i] = nums[j];
-            nums[j] = temp;
-        }
 }
