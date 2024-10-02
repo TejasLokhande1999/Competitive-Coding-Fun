@@ -1,28 +1,30 @@
 class Solution {
     public List<List<Integer>> subsets(int[] nums) {
-        List<List<Integer>> res = new ArrayList<>();
-        List<Integer> list = new ArrayList<>();
 
-        dfs(res,list,nums,0);
+     List<List<Integer>> res = new ArrayList<>();
+     List<Integer> list = new ArrayList<>();
 
-        return res;
+     dfs(res,list,nums,0);
+
+     return res;
+
     }
 
-    public void dfs(List<List<Integer>> res, List<Integer> list, int arr[], int index){
+    public void dfs(List<List<Integer>> res, List<Integer> list, int nums[], int index){
 
-        if(index>=arr.length){
+        if(index==nums.length){
             res.add(new ArrayList<>(list));
         }else{
 
-                    list.add(arr[index]);
-        //Go to left, i.e. recurse here
-        dfs(res,list,arr,index+1);
+            list.add(nums[index]);
 
-        //backtrack
-        list.remove(list.size()-1);
-        dfs(res,list,arr,index+1);
+            dfs(res,list,nums,index+1);
+
+            list.remove(list.size()-1);
+
+            dfs(res,list,nums,index+1);
 
         }
-    }
 
+    }
 }
