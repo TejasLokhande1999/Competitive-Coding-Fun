@@ -1,105 +1,102 @@
-// https://leetcode.com/submissions/detail/761120641/
 class DetectSquares {
-
-    private Integer[][] matrix;
-
+    Integer mat[][];
     public DetectSquares() {
-        matrix = new Integer[1001][1001];
+        mat = new Integer[1001][1001];
     }
-
+    
     public void add(int[] point) {
-        if (matrix[point[0]][point[1]] == null) {
-            matrix[point[0]][point[1]] = 1;
-        } else {
-            matrix[point[0]][point[1]] = matrix[point[0]][point[1]] + 1;
+        int x = point[0];
+        int y = point[1];
+
+        if(mat[x][y]==null){
+            mat[x][y] = 1;
+        }else{
+            mat[x][y]+=1;
         }
     }
-
+    
     public int count(int[] point) {
-        int currentSquareCount = 0;
-        int startRow = point[0];
-        int startCol = point[1];
-        int curRow = point[0];
-        int curCol = point[1];
+        int px = point[0];
+        int py = point[1];
 
-        while (curRow != 0 && curCol != 0) {
-            curRow--;
-            curCol--;
-            if (
-                matrix[curRow][curCol] != null &&
-                matrix[startRow][curCol] != null &&
-                matrix[curRow][startCol] != null
-            ) {
-                currentSquareCount =
-                    currentSquareCount +
-                    (
-                        matrix[curRow][curCol] *
-                        matrix[startRow][curCol] *
-                        matrix[curRow][startCol]
-                    );
+
+        int noOfSquares = 0;
+
+        int currRow = point[0];
+        int currCol = point[1];
+
+        while(currRow!=0 && currCol!=0){
+
+            currRow--;
+            currCol--;
+
+            if( mat[currRow][currCol]!=null &&    //found the diagonally opposite point
+                mat[currRow][py]!=null &&
+                mat[px][currCol]!=null
+            ){
+                noOfSquares+= (mat[currRow][currCol]*mat[currRow][py]*mat[px][currCol]);
             }
         }
 
-        curRow = point[0];
-        curCol = point[1];
-        while (curRow != 1000 && curCol != 1000) {
-            curRow++;
-            curCol++;
-            if (
-                matrix[curRow][curCol] != null &&
-                matrix[startRow][curCol] != null &&
-                matrix[curRow][startCol] != null
-            ) {
-                currentSquareCount =
-                    currentSquareCount +
-                    (
-                        matrix[curRow][curCol] *
-                        matrix[startRow][curCol] *
-                        matrix[curRow][startCol]
-                    );
+        currRow = point[0];
+        currCol = point[1];
+
+        while(currRow<1000 && currCol<1000){
+
+            currRow++;
+            currCol++;
+
+            if( mat[currRow][currCol]!=null &&    //found the diagonally opposite point
+                mat[currRow][py]!=null &&
+                mat[px][currCol]!=null
+            ){
+                noOfSquares+= (mat[currRow][currCol]*mat[currRow][py]*mat[px][currCol]);
             }
         }
 
-        curRow = point[0];
-        curCol = point[1];
-        while (curRow != 0 && curCol != 1000) {
-            curRow--;
-            curCol++;
-            if (
-                matrix[curRow][curCol] != null &&
-                matrix[startRow][curCol] != null &&
-                matrix[curRow][startCol] != null
-            ) {
-                currentSquareCount =
-                    currentSquareCount +
-                    (
-                        matrix[curRow][curCol] *
-                        matrix[startRow][curCol] *
-                        matrix[curRow][startCol]
-                    );
+        currRow = point[0];
+        currCol = point[1];
+
+        while(currRow>0 && currCol<1000){
+
+            currRow--;
+            currCol++;
+
+            if( mat[currRow][currCol]!=null &&    //found the diagonally opposite point
+                mat[currRow][py]!=null &&
+                mat[px][currCol]!=null
+            ){
+                noOfSquares+= (mat[currRow][currCol]*mat[currRow][py]*mat[px][currCol]);
             }
         }
 
-        curRow = point[0];
-        curCol = point[1];
-        while (curRow != 1000 && curCol != 0) {
-            curRow++;
-            curCol--;
-            if (
-                matrix[curRow][curCol] != null &&
-                matrix[startRow][curCol] != null &&
-                matrix[curRow][startCol] != null
-            ) {
-                currentSquareCount =
-                    currentSquareCount +
-                    (
-                        matrix[curRow][curCol] *
-                        matrix[startRow][curCol] *
-                        matrix[curRow][startCol]
-                    );
+        currRow = point[0];
+        currCol = point[1];
+
+        while(currRow<1000 && currCol>0){
+
+            currRow++;
+            currCol--;
+
+            if( mat[currRow][currCol]!=null &&    //found the diagonally opposite point
+                mat[currRow][py]!=null &&
+                mat[px][currCol]!=null
+            ){
+                noOfSquares+= (mat[currRow][currCol]*mat[currRow][py]*mat[px][currCol]);
             }
         }
 
-        return currentSquareCount;
+
+        return noOfSquares;
+
+        
+
     }
 }
+
+/**
+ * Your DetectSquares object will be instantiated and called as such:
+ * DetectSquares obj = new DetectSquares();
+ * obj.add(point);
+ * int param_2 = obj.count(point);
+ */
