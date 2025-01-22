@@ -1,54 +1,72 @@
 class RandomizedSet {
 
-    ArrayList<Integer> list;
-    Map<Integer, Integer> map;
+    List<Integer>list;
+    Map<Integer, Integer>map;
     public RandomizedSet() {
-        list =new ArrayList<>();
+        list = new ArrayList<>();
         map = new HashMap<>();
     }
     
     public boolean insert(int val) {
         if(map.containsKey(val)){
             return false;
-        }else{            
+        }else{
+
             list.add(val);
-            map.put(val,list.size()-1);
+            int index = list.size()-1;
+            map.put(val,index);
             return true;
         }
     }
     
     public boolean remove(int val) {
-        if(!map.containsKey(val)){
-            return false;
-        }else{
+        if(map.containsKey(val)){
 
-            //else map has the value
-            int eleIndex = map.get(val);
-            int lastIndex = list.size()-1;
+        //     if(map.size()==1){
+        //         map.remove(val);
+        //         list.remove(list.size()-1);
+        //         return true;
+        //     }
+        //     int oldIndex = map.get(val);
+        //     int oldKey = val;
+        //     map.remove(val);
 
-            if(eleIndex!=lastIndex){
-            //move last indexed value over here
-            int lastValue = list.get(lastIndex);
-            list.set(eleIndex,lastValue);
+        //     int lastKey = list.get(list.size()-1);
+        //     map.put(lastKey,oldIndex);
 
-            //update the index of last value with this one
-            //int lastValue = list.get(lastIndex);
-            map.put(lastValue, eleIndex);
-            }
+        // //put the element at LastIndex to the element at the removed index
+        // list.set(oldIndex,lastKey);
+        // list.remove(list.size()-1);
+
+          // Get the index of the element to remove
+    int oldIndex = map.get(val);
+
+    // Get the last element in the list
+    int lastKey = list.get(list.size() - 1);
+
+    // Swap the last element with the element to remove
+    list.set(oldIndex, lastKey);
+    map.put(lastKey, oldIndex);
+
+    // Remove the last element from the list and the map
+    list.remove(list.size() - 1);
+    map.remove(val);
 
 
-            list.remove(list.size()-1);
-            map.remove(val);
             return true;
-
+        }else{
+            return false;
         }
     }
     
     public int getRandom() {
-        Random random = new Random();
-        int randomIndex = random.nextInt(list.size());
+        Random obj = new Random();
 
-        return list.get(randomIndex);
+        int randVal = Math.abs(obj.nextInt());
+
+        int index = randVal%list.size();
+        System.out.println(randVal+" "+index);
+        return list.get(index);        
     }
 }
 
