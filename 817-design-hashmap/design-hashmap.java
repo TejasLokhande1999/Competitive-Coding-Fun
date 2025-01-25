@@ -1,70 +1,69 @@
 class MyHashMap {
 
-    int SIZE = 769;
     LinkedList<Entry> map[];
 
     public MyHashMap() {
-        map = new LinkedList[SIZE];
+        map = new LinkedList[1000];
+        for(int i=0;i<1000;i++){
+            map[i] = new LinkedList<>();
+        }
     }
     
-    public void put(int key, int val) {
-        int bucket = key%SIZE;
-        if(map[bucket]==null){
-            map[bucket] = new LinkedList<Entry>();
-            map[bucket].add(new Entry(key,val));
-        }else{
-            for(Entry entry : map[bucket]){
-                if(entry.key==key){
-                    entry.val=val;
-                    return;
-                }
-            }
+    public void put(int key, int value) {
+        int bucket = key%1000;
+        LinkedList<Entry> entries = map[bucket];
 
-            map[bucket].add(new Entry(key,val));
+        for(Entry entry :entries){
+            if(entry.key==key){
+                entry.value=value;
+                return;
+            }
         }
 
+        entries.add(new Entry(key,value));
     }
     
     public int get(int key) {
-        int bucket = key%SIZE;
+        int bucket = key%1000;
         LinkedList<Entry> entries = map[bucket];
-        if(entries==null){
-            return -1;
-        }else{
-            for(Entry entry : entries){
-                if(entry.key==key){
-                    return entry.val;
-                }
+
+        for(Entry entry : entries){
+            if(entry.key==key){
+                return entry.value;
             }
         }
+
         return -1;
+
     }
     
     public void remove(int key) {
-        int bucket = key%SIZE;
+        int bucket = key%1000;
+        LinkedList<Entry> entries = map[bucket];
 
-        LinkedList<Entry> list = map[bucket];
-        if(list==null){
-            return;
-        }else{
-            for(Entry entry : list){
-                if(entry.key==key){
-                    list.remove(entry);
-                    return;
-                }
+        for(Entry entry : entries){
+            if(entry.key==key){
+                entries.remove(entry);
+                return;
             }
         }
 
+        return;
     }
 }
 
-class Entry{
+public class Entry{
+
     int key;
-    int val;
-    Entry(int key, int val){
+    int value;
+   // ListNode next;
+
+    public Entry(int key, int value){
         this.key = key;
-        this.val= val;
+        this.value = value;
+        //this.next = null;
     }
+
 }
 
 /**
