@@ -1,27 +1,31 @@
 class MyHashSet {
-    boolean arr[];
+    List<List<Integer>> list;
     public MyHashSet() {
-        arr = new boolean[10000001];
+        list = new ArrayList<>();
+        for(int i=0;i<10;i++)
+            list.add(new ArrayList<>());
     }
     
     public void add(int key) {
-        if(arr[key]==false){
-            arr[key]=true;
-        }
+        int index = key%10;
+        List<Integer> ll = list.get(index);
+        if(!ll.contains(key))
+            ll.add(key);
+    
     }
     
     public void remove(int key) {
-        if(arr[key]==true){
-            arr[key]=false;
-        }
+        int index = key%10;
+        List<Integer> ll = list.get(index);
+        ll.remove(Integer.valueOf(key));
     }
     
     public boolean contains(int key) {
-        if(arr[key]==true){
+        int index = key%10;
+        List<Integer> ll = list.get(index);
+        if(ll.contains(key))
             return true;
-        }else{
-            return false;
-        }
+        return false;
     }
 }
 
