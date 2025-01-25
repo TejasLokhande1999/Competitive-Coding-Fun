@@ -1,35 +1,25 @@
 class Solution {
-    public void moveZeroes(int[] arr) {
-        //check for i
+    public void moveZeroes(int[] nums) {
         int i=0;
-        int n = arr.length;
-        if(n==0){
-            return;
-        }
-        boolean avl=false;
-        for(int k=0;k<n;k++){
-            if(arr[k]==0){
-                i=k;
-                avl=true;
-                break;
-            }
-        }
+        int j=0;
+        int n = nums.length;
 
-        if(!avl){
-            return;
+        while(i<n && nums[i]!=0){
+            i++;
         }
+        if(j<n)
+            j=i+1;
 
-
-        for(int j=i+1;j<n;j++){
-            if(arr[j]!=0){
-                int temp = arr[i];
-                arr[i]=arr[j];
-                arr[j]=temp;
+        while(j<n && i<n){
+            if(nums[j]!=0){
+                int temp = nums[j];
+                nums[j]=nums[i];
+                nums[i] = temp;
                 i++;
+                j++;
+            }else{
+                j++;
             }
         }
-
-
-
     }
 }
