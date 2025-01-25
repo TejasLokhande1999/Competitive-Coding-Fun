@@ -1,30 +1,45 @@
 class MyHashSet {
-    List<List<Integer>> list;
+
+    List<Integer> map[];
     public MyHashSet() {
-        list = new ArrayList<>();
-        for(int i=0;i<10;i++)
-            list.add(new ArrayList<>());
+        map = new ArrayList[1000];
+        for(int i=0;i<1000;i++){
+            map[i] = new ArrayList<>();
+        }
     }
     
     public void add(int key) {
-        int index = key%10;
-        List<Integer> ll = list.get(index);
-        if(!ll.contains(key))
-            ll.add(key);
-    
+        int bucket = key%1000;
+        List<Integer> list = map[bucket];
+        for(Integer i: list){
+            if(i==key){
+                return;
+            }
+        }
+
+        list.add(key);
     }
     
     public void remove(int key) {
-        int index = key%10;
-        List<Integer> ll = list.get(index);
-        ll.remove(Integer.valueOf(key));
+         int bucket = key%1000;
+        List<Integer> list = map[bucket];
+        for(Integer i: list){
+            if(i==key){
+                list.remove(Integer.valueOf(key));
+                return;
+            }
+        }
+
     }
     
     public boolean contains(int key) {
-        int index = key%10;
-        List<Integer> ll = list.get(index);
-        if(ll.contains(key))
-            return true;
+        int bucket = key%1000;
+        List<Integer> list = map[bucket];
+        for(Integer i: list){
+            if(i==key){
+                return true;
+            }
+        }
         return false;
     }
 }
