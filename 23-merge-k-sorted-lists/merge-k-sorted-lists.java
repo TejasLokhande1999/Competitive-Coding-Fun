@@ -10,48 +10,53 @@
  */
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        ListNode dummy = new ListNode(-1);
-
-        ListNode curr = dummy;
-        PriorityQueue<Pair> pq = new PriorityQueue<>(new PairComparator()); 
-            for(ListNode list : lists){
-                if(list!=null)
-                    pq.add(new Pair(list,list.val));
-            }
-       
-            while(!pq.isEmpty()){
-                Pair p = pq.poll();
-                ListNode temp = p.node;
-                ListNode newNode = new ListNode(temp.val);
-                curr.next=newNode;
-                curr=curr.next;
-                temp=temp.next;
-                if(temp!=null)
-                    pq.add(new Pair(temp,temp.val));
-            }
-
         
-        return dummy.next;
+        PriorityQueue<ListNode> pq = new PriorityQueue<>(new ListNodeComparator());
+
+        for(ListNode list : lists){
+            if(list!=null)
+                pq.add(list);
+            
+        }
+
+        ListNode head = null;
+        ListNode curr = null;
+
+        while(!pq.isEmpty()){
+
+            ListNode node = pq.poll();
+            ListNode newNode = new ListNode(node.val);
+            if(head==null){
+                head = newNode;
+                curr = newNode;
+            }else{
+
+                curr.next = newNode;
+                curr = curr.next;
+            }
+
+            if(node.next!=null){
+                pq.add(node.next);
+            }
+
+        }
+
+        return head;
     }
 }
 
-class Pair{
-    ListNode node;
-    int val;
-    Pair(ListNode node, int val){
-        this.node=node;
-        this.val=val;
-    }
-}
+class ListNodeComparator implements Comparator<ListNode>{
 
-class PairComparator implements Comparator<Pair>{
-    public int compare(Pair p1, Pair p2){
-        if(p1.val>p2.val){
+    public int compare(ListNode l1, ListNode l2){
+
+        if(l1.val>l2.val){
             return 1;
-        }else if(p1.val<p2.val){
+        }else if(l1.val<l2.val){
             return -1;
         }else{
             return 0;
         }
+
     }
+
 }
