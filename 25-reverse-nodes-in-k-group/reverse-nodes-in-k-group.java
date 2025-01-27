@@ -21,7 +21,7 @@ class Solution {
             ListNode kthNode = getKthNode(currStart,k);
 
             if(kthNode==null){
-                prevGrpEnd.next=currStart;
+               // prevGrpEnd.next=currStart;
                 return dummy.next;
             }
             ListNode nextGrpStart = kthNode.next;
