@@ -17,54 +17,53 @@ class Solution {
         ListNode currStart = head;
 
         while(currStart!=null){
-        ListNode kthNode = getKthNode(currStart,k);
-        if(kthNode==null){
-            prevGrpEnd.next=currStart;
-            break;
-        }else{
+
+            ListNode kthNode = getKthNode(currStart,k);
+
+            if(kthNode==null){
+                prevGrpEnd.next=currStart;
+                return dummy.next;
+            }
             ListNode nextGrpStart = kthNode.next;
-            kthNode.next=null;
+            kthNode.next = null;
 
             reverse(currStart);
 
             prevGrpEnd.next = kthNode;
             currStart.next = nextGrpStart;
             prevGrpEnd = currStart;
-            currStart=currStart.next;
-        }
+            currStart = currStart.next;
 
         }
+
         return dummy.next;
 
-
     }
 
+    public ListNode getKthNode(ListNode temp, int k){
 
-    public ListNode getKthNode(ListNode node, int k){
-        ListNode temp = node;
+        ListNode node = temp;
+        int count=1;
 
-        while(temp!=null && k>1){
-            k--;
-            temp=temp.next;
+        while(node!=null && count<k){
+            count++;
+            node = node.next;
         }
 
-        return temp;
+        return node;
     }
 
-    public ListNode reverse(ListNode node){
+    public void reverse(ListNode head){
 
-        ListNode prev=null;
-        ListNode front = null;
-
-        while(node!=null){
-            front = node.next;
-            node.next=prev;
-            prev = node;
-            node = front;
+        ListNode curr = head;
+        ListNode prev = null;
+        ListNode next = null;
+        while(curr!=null){
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
         }
 
-        return prev;
     }
-
-
 }
