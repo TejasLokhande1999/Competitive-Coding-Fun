@@ -12,20 +12,20 @@
 public class Solution {
     public ListNode detectCycle(ListNode head) {
         
-        Set<ListNode> set = new HashSet<>();
-
         ListNode temp = head;
+        int pos =0;
+        Map<ListNode, Integer> map= new HashMap<>();
 
         while(temp!=null){
-
-            if(set.contains(temp)){
+            if(map.containsKey(temp)){
                 return temp;
             }
-            set.add(temp);
-            temp=temp.next;
+            map.put(temp,pos);
+            temp = temp.next;
+            pos++;
         }
-            return null;
+
+        return null;
 
     }
-
 }
