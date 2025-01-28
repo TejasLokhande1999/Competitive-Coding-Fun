@@ -1,107 +1,88 @@
 class LRUCache {
 
-    // int k;
-    // Map<Integer, Integer> map;
-    // ArrayList<Integer> list;
-    // public LRUCache(int capacity) {
-    //     this.map = new HashMap<>();
-    //     this.k =capacity;
-    //     list =new ArrayList<>();
-    // }
-    
-    // public int get(int key) {
-    //     if(map.containsKey(key)){
-
-    //         list.remove((Integer) key);
-    //         list.add(key);
-    //         return map.get(key);
-    //     }else{
-    //         return -1;
-    //     }
-    // }
-    
-    // public void put(int key, int value) {
-    //     if(map.containsKey(key)){
-    //         map.put(key,value);
-    //         list.remove((Integer) key);
-    //         list.add(key);
-    //     }else{
-    //         //does not contain key
-    //         if(map.size()<k){       //nornally insert
-    //             map.put(key,value);
-    //             list.add(key);
-    //         }else{
-    //             //
-    //             map.remove(list.get(0));
-    //             map.put(key,value);
-    //             list.remove(0);
-    //             list.add(key);
-    //         }
-    //     }
-    // }
-
+    int size;
     Map<Integer, Node> map;
     Node head;
     Node tail;
-    int capacity=0;
-    
-    LRUCache(int capacity){
-        this.map = new HashMap<>();
-        this.head = new Node(0,0);
-        this.tail = new Node(0,0);
-        this.head.next=tail;
-        this.tail.prev = head;
-        this.capacity = capacity;
+    public LRUCache(int capacity) {
+        head = new Node(0,0);
+        tail = new Node(0,0);
+        head.next = tail;
+        tail.prev = head;
+        size = capacity;
+        map = new HashMap<>();
     }
+    
+    public int get(int key) {
+        if(!map.containsKey(key)){
+            return -1;
+        }else{
+            Node node = map.get(key);
 
-    public void insert(Node node){
-        map.put(node.key, node);
-        node.next = head.next;
-        node.next.prev = node;
-        head.next=node;
-        node.prev = head;
+            if(node.prev!=head){
+                remove(node);
+                addFirst(node);
+            }
+            return node.val;
+        }
+    }
+    
+    public void put(int key, int value) {
+        
+        if(!map.containsKey(key)){
+            Node node = new Node(key,value);
+            map.put(key,node);
+
+            addFirst(node);
+
+            if(map.size()>size){
+                // get rid of leastRU
+                map.remove(tail.prev.key);
+                remove(tail.prev);
+                                
+            }
+        }else{
+
+            Node node = map.get(key);
+            node.val = value;
+            if(node.prev!=head){
+            remove(node);
+            addFirst(node);
+            }
+        }
     }
 
     public void remove(Node node){
-        map.remove(node.key);
-        node.prev.next = node.next;
+
         node.next.prev = node.prev;
+        node.prev.next = node.next;
+        return;
     }
 
-    public int get(int key){
-        if(map.containsKey(key)){
-            Node node = map.get(key);
-            remove(node);
-            insert(node);
-            return node.value;
-        }else{
-            return -1;
-        }
-    }
+    public void addFirst(Node node){
 
-    public void put(int key, int value){
-        if(map.containsKey(key)){
-            Node node = map.get(key);
-            remove(node);
-        }
+        node.next = head.next;
+        head.next.prev = node;
+        head.next = node;
+        node.prev = head;
 
-        if(map.size()==capacity){
-            remove(tail.prev);
-        }
-        insert(new Node(key,value));
+        return;
+
     }
 }
-
 class Node{
 
-    Node next;
-    Node prev;
     int key;
-    int value;
-    Node(int key, int value){
+    int val;
+    Node prev;
+    Node next;
+
+    Node(int key, int val){
         this.key = key;
-        this.value = value;
+        this.val = val;
     }
+
+
 }
 /**
  * Your LRUCache object will be instantiated and called as such:
