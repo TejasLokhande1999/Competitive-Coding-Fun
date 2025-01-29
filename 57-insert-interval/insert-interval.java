@@ -1,56 +1,41 @@
 class Solution {
     public int[][] insert(int[][] intervals, int[] newInterval) {
         
-        List<List<Integer>> list = new ArrayList<>();
-        
-        int Istart = newInterval[0];
-        int Iend = newInterval[1];
+        List<int[]> list = new ArrayList<>();
 
-        int n = intervals.length;
-        int i=0;
-        while(i<n && intervals[i][1]<Istart){
-            List<Integer> a = new ArrayList<>();
-            a.add(intervals[i][0]);
-            a.add(intervals[i][1]);
+    int i=0;
+    int n = intervals.length;
 
-            list.add(a);
-            i++;
-        }
+    int Istart = newInterval[0];
+    int Iend = newInterval[1];
+    while(i<n && intervals[i][1]<Istart){
 
-        //end>=Istart
-        //run this loop till start<=Iend
+        list.add(new int[]{intervals[i][0],intervals[i][1]});
+        i++;
+    }
 
-        while(i<n && intervals[i][0]<=Iend){
-            newInterval[0] = Math.min(newInterval[0], intervals[i][0]);
-            newInterval[1] = Math.max(newInterval[1],intervals[i][1]);
+    //now we reach end
+    // end<Istart is false
 
-            i++;
-        }
+    //now the range is start<=Iend
+
+    while(i<n && intervals[i][0]<=Iend){
+
+        Istart = Math.min(Istart,intervals[i][0]);
+        Iend = Math.max(Iend,intervals[i][1]);
+        i++;
+    }
+
+    list.add(new int[]{Istart, Iend});
 
 
-        List<Integer> a2 = new ArrayList<>();
-        a2.add(newInterval[0]);
-        a2.add(newInterval[1]);
+    while(i<n){
 
-        list.add(a2);
+        list.add(intervals[i]);
+        i++;
+    }
 
-        while(i<n){
-            List<Integer> a = new ArrayList<>();
-            a.add(intervals[i][0]);
-            a.add(intervals[i][1]);
-
-            list.add(a);
-            i++;
-        }
-
-        int retArr[][] = new int[list.size()][2];
-
-        for(int j=0;j<list.size();j++){
-            retArr[j][0] = list.get(j).get(0);
-            retArr[j][1] = list.get(j).get(1);
-        }
-
-        return retArr;
+    return list.toArray(new int[list.size()][]);
 
     }
 }
