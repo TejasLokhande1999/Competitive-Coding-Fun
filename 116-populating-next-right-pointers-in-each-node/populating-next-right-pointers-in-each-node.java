@@ -27,42 +27,52 @@ class Solution {
             return null;
         }
 
-        Queue<Pair> q = new LinkedList<>();
-
-        q.add(new Pair(root,0));
-
+        Queue<Node> q= new LinkedList<>();
+        q.add(root);
         while(!q.isEmpty()){
-            int size = q.size();
+            int level = q.size();
+            List<Node> subList = new ArrayList<>();
+            for(int i=0;i<level;i++){
 
-            for(int i=0;i<size;i++){
-                Pair p = q.poll();
-                Node front = p.node;
-                int level = p.level;
-                if(q.size()==0){
-                    front.next=null;
-                }else if(level==q.peek().level){
-                    front.next=q.peek().node;
-                }else{
-                    front.next=null;
-                }
-                if(front.left!=null){
-                    q.add(new Pair(front.left,level+1));
-                }
-                if(front.right!=null){
-                    q.add(new Pair(front.right,level+1));
+                Node node = q.poll();
+                subList.add(node);
+
+                if(node.left!=null){
+                    q.add(node.left);
                 }
 
-            } 
+                if(node.right!=null){
+                    q.add(node.right);
+                }
+            }
+
+            generateRight(subList);
+
         }
 
-        return root; 
+        return root;
     }
-}
-class Pair{
-    Node node;
-    int level;
-    Pair(Node node, int level){
-        this.node = node;
-        this.level = level;
+
+    public void generateRight(List<Node> list){
+
+        if(list.size()==1){
+            Node node = list.get(0);
+            node.next=null;
+            return;
+        }else{
+
+                int n = list.size();
+
+                for(int i=0;i<n-1;i++){
+                    Node first = list.get(i);
+                    Node second = list.get(i+1);
+
+                    first.next = second;
+                }
+
+                list.get(n-1).next = null; 
+
+        }
+
     }
 }
