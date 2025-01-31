@@ -15,38 +15,53 @@
  */
 class Solution {
     public boolean isSubtree(TreeNode root, TreeNode subRoot) {
-        return inorder(root,subRoot);
-    }
+        
+        Queue<TreeNode> q = new LinkedList<>();
 
-    public boolean inorder(TreeNode node,TreeNode subRoot){
-
-        if(node==null){
+        if(root==null){
             return false;
         }
 
-        
-        if(isIdentical(node,subRoot)){
-            return true;
+        q.add(root);
+
+        while(!q.isEmpty()){
+
+            TreeNode node= q.poll();
+
+            if(node.val==subRoot.val){
+                boolean flag = isIdentical(node,subRoot);
+                if(flag){
+                    return true;
+                }
+            }
+
+            if(node.left!=null){
+                q.add(node.left);
+            }
+
+            if(node.right!=null){
+                q.add(node.right);
+            }
+
         }
 
-        boolean v1 = inorder(node.left,subRoot);
-        boolean v2 = inorder(node.right,subRoot);
+        return false;
 
-        return v1||v2;
     }
 
-
     public boolean isIdentical(TreeNode node1, TreeNode node2){
-
         if(node1==null && node2==null){
             return true;
         }
 
-        if(node1==null || node2==null || node1.val!=node2.val){
+        if(node1==null || node2==null){
             return false;
         }
 
-        return isIdentical(node1.left, node2.left)&&isIdentical(node1.right, node2.right);
+        if(node1.val==node2.val){
+            return isIdentical(node1.left,node2.left)&&isIdentical(node1.right,node2.right);
+        }
 
+        return false;
     }
 }
