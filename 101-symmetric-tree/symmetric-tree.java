@@ -15,21 +15,23 @@
  */
 class Solution {
     public boolean isSymmetric(TreeNode root) {
-        return func(root.left,root.right);
+        
+        return isSymm(root.left,root.right);
     }
 
-    public boolean func(TreeNode p, TreeNode q){
-        if(p==null && q==null){
+    public boolean isSymm(TreeNode node1, TreeNode node2){
+
+        if(node1==null && node2==null){
             return true;
         }
 
-        if(p==null || q==null){
+        if(node1==null || node2==null){
             return false;
         }
 
-        if(p.val==q.val){
-            return func(p.left,q.right) && func(p.right,q.left);
-        }
+        if(node1.val==node2.val)
+            return isSymm(node1.left,node2.right)&&isSymm(node1.right,node2.left);
+
         return false;
     }
 }
