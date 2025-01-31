@@ -15,90 +15,101 @@
  */
 class Solution {
     public List<List<Integer>> verticalTraversal(TreeNode root) {
-        Queue<Pair>q = new LinkedList<>();
-        Map<Integer, List<Integer>> map = new TreeMap<>();
+        
+        List<List<Integer>> list = new ArrayList<>();
 
-        List<Pair> pList = new ArrayList<>();
+        if(root==null){
+            return list;
+        }
+
+        Queue<Pair> q = new LinkedList<>();
+
         q.add(new Pair(root,0,0));
+
+        Map<Integer,List<Pair>> map = new TreeMap<>();
+
         while(!q.isEmpty()){
+
             Pair p = q.poll();
-            pList.add(p);
             TreeNode node = p.node;
-            int col = p.col;
-            int row = p.row;
-        //map.putIfAbsent(line, new ArrayList<>());
-        //map.get(line).add(node.val);
-    
-        if(node.left!=null){
-            q.add(new Pair(node.left,col-1,row+1));
+            int line = p.line;
+            int depth = p.depth;
+
+            map.putIfAbsent(line, new ArrayList<>());
+
+            map.get(line).add(p);
+
+            if(node.left!=null){
+                q.add(new Pair(node.left,line-1,depth+1));
+            }
+
+            if(node.right!=null){
+                q.add(new Pair(node.right,line+1,depth+1));
+            }
+
         }
 
-        if(node.right!=null){
-            q.add(new Pair(node.right,col+1,row+1));
+        for(Map.Entry<Integer, List<Pair>> entry : map.entrySet()){
+
+            List<Pair> pList = entry.getValue();
+            Collections.sort(pList, new PairComparator());
+            List<Integer> tempList = new ArrayList<>();
+            for(Pair p : pList){
+                tempList.add(p.node.val);
+            }
+
+            list.add(tempList);
         }
-    }
 
-    Collections.sort(pList, new PairComparator());
+        return list;
 
-    List<List<Integer>> list = new ArrayList<>();
-    for(int i=0;i<pList.size();i++){
-        Pair p = pList.get(i);
-        int line = p.col;
-        map.putIfAbsent(line, new ArrayList<>());
-        map.get(line).add(p.node.val);
-    }
-    for(Map.Entry<Integer,List<Integer>> entry : map.entrySet()){
-        list.add(entry.getValue());
-    }
 
-    return list;
+
+    }
 }
-
-}
-
 
 
 class Pair{
-    
+
     TreeNode node;
-    int col;
-    int row;
-    
-    Pair(TreeNode node, int col, int row){
+    int line;
+    int depth;
+
+    Pair(TreeNode node, int line, int depth){
         this.node = node;
-        this.col = col;
-        this.row = row;
+        this.line = line;
+        this.depth = depth;
     }
-    
-    
+
 }
 
 class PairComparator implements Comparator<Pair>{
 
     public int compare(Pair p1, Pair p2){
-        if(p1.col>p2.col){
-            return 1;
-        }else if(p1.col<p2.col){
-            return -1;
-        }else{
-            //tie so sort by row
-            if(p1.row>p2.row){
-                return 1;
-            }else if(p1.row<p2.row){
-                return -1;
-            }else{
-                //sprt by val
-                if(p1.node.val>p2.node.val){
-                    return 1;
-                }else if(p1.node.val<p2.node.val){
-                    return -1;
-                }else{
-                    return 0;
-                }
 
+        if(p1.depth<p2.depth){
+            return -1;
+        }else if(p1.depth>p2.depth){
+            return 1;
+        }else{
+
+
+            //this is the condition where deoth is same
+            //sort baed on the value
+
+            TreeNode node1 = p1.node;
+            TreeNode node2 = p2.node;
+
+            if(node1.val<node2.val){
+                return -1;
+            }else if(node1.val>node2.val){
+                return 1;
+            }else{
+                return 0;
             }
 
         }
+
     }
 
 }
