@@ -13,7 +13,6 @@ class Solution {
             return null;
         }
 
-
         if(p.equals(root)||q.equals(root)){
             return root;
         }
