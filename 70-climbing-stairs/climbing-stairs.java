@@ -1,26 +1,35 @@
 class Solution {
     public int climbStairs(int n) {
+        
+        int cache[] = new int[n+1];
 
-        if(n==1){
-            return 1;
-        }if(n==2){
-            return 2;
-        }else{
-
-            n = n+1;
-            int dp[] = new int[n];
-            dp[n-1] = 1;
-            dp[n-2] = 1;
-
-            for(int i=n-3;i>=0;i--){
-                dp[i] = dp[i+1] + dp[i+2];
-            }
-
-            return dp[0];
-
-
+        for(int i=0;i<n+1;i++){
+            cache[i] = -1;
         }
 
 
+        int val = dfs(0,n,cache);
+
+        return val;
     }
+
+    public int dfs(int i,int n, int[] cache){
+
+        if(i>n){
+            return 0;
+        }
+        if(i==n){
+            return 1;
+        }
+
+        if(cache[i]!=-1){
+            return cache[i];
+        }
+
+        return cache[i] = dfs(i+1,n,cache) + dfs(i+2,n,cache);
+
+
+    }
+
+
 }
