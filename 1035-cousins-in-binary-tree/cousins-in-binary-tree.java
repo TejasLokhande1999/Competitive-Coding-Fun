@@ -15,52 +15,56 @@
  */
 class Solution {
     public boolean isCousins(TreeNode root, int x, int y) {
-        List<Integer> list1 = new ArrayList<>();
-        List<Integer> list2 = new ArrayList<>();
+        Map<Integer,Pair> map = new HashMap<>();
+        //Map of child to parent
 
-        inorder(root,list1,x);
-        inorder(root,list2,y);
-
-        for(int i=0;i<list1.size();i++){
-            System.out.print(list1.get(i)+" ");
-        }
-
-        System.out.println();
-        
-
-         for(int i=0;i<list2.size();i++){
-            System.out.print(list2.get(i)+" ");
-        }
-
-        if(list1.size()!=list2.size()){
+        if(root==null){
             return false;
-        }else{
-            int n = list1.size();
-            if(list1.get(n-2)!=list2.get(n-2)){
+        }
+
+        Queue<Pair> q =new LinkedList<>();
+
+        q.add(new Pair(root,0));
+        map.put(root.val,new Pair(null,0));
+
+        while(!q.isEmpty()){
+            Pair p = q.poll();
+            TreeNode node = p.node;
+            int level = p.level;
+
+            if(node.left!=null){
+                q.add(new Pair(node.left,level+1));
+                map.put(node.left.val, new Pair(node, level+1));
+            }
+
+            if(node.right!=null){
+                q.add(new Pair(node.right, level+1));
+                map.put(node.right.val, new Pair(node, level+1));
+            }
+
+        }
+
+        Pair p1 = map.get(x);
+        Pair p2 = map.get(y);
+
+        if(p1.node!=p2.node){
+            if(p1.level==p2.level){
                 return true;
             }
         }
+
         return false;
+
     }
+}
 
-    public boolean inorder(TreeNode node, List<Integer> list, int data){
+class Pair{
 
-        if(node==null){
-            return false;
-        }
+    TreeNode node;
+    int level;
 
-        list.add(node.val);
-
-        if(node.val==data){
-            return true;
-        }
-
-        if(inorder(node.left,list,data) || inorder(node.right,list,data)){
-            return true;
-        }
-
-        list.remove(list.size()-1);
-        return false;
-
+    Pair(TreeNode node, int level){
+        this.node = node;
+        this.level = level;
     }
 }
