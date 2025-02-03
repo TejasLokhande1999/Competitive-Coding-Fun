@@ -1,27 +1,55 @@
 class Solution {
     public int findCircleNum(int[][] isConnected) {
-        int V = isConnected.length;
-        boolean visited[] = new boolean[V];
+        //change to adj matrix;
 
-        int counter=0;
-        for(int i=0;i<V;i++){
-            if(!visited[i]){
-                counter+=1;
-                dfs(i,visited,isConnected);
+        int V = isConnected.length;
+
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+
+
+        for(int i=0;i<V+1;i++){
+            adj.add(new ArrayList<>());
+        }
+        int n = isConnected.length;
+        int m = isConnected[0].length;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(isConnected[i][j]==1){
+                    adj.get(i).add(j);
+                    adj.get(j).add(i);
+                }
             }
         }
+        int count = 0;
 
-        return counter;
+        boolean visited[] = new boolean[V+1];
+        for(int i=0;i<V;i++){
+            
+            if(!visited[i]){
+            count+=1;
+            dfs(i,visited,adj);
+
+            }
+
+        }
+
+        return count;
+
     }
 
-    public void dfs(int currNode, boolean visited[], int isConnected[][]){
+    public void dfs(int currNode, boolean[] visited, ArrayList<ArrayList<Integer>> adj){
 
         visited[currNode] = true;
 
-        for(int i=0;i<isConnected.length;i++){
-            if(!visited[i] && isConnected[currNode][i]==1){
-                dfs(i,visited,isConnected);
+        ArrayList<Integer> list = adj.get(currNode);
+
+        for(int i=0;i<list.size();i++){
+
+            int node = list.get(i);
+            if(!visited[node]){
+                dfs(node,visited,adj);
             }
+
         }
 
     }
