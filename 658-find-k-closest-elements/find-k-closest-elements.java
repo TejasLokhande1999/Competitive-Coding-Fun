@@ -16,7 +16,7 @@ class Solution {
         List<Integer> list = new ArrayList<>();
 
         while(!pq.isEmpty()){
-            list.add(pq.poll().ele);
+            list.add(0,pq.poll().ele);
         }
         Collections.sort(list);
         return list;
