@@ -1,31 +1,39 @@
 class DetectSquares {
 
-    private Map<List<Integer>, Integer> ptsCount;
-    private List<List<Integer>> pts;
-
+    Map<List<Integer>, Integer> map;
+    List<List<Integer>> list;
     public DetectSquares() {
-                ptsCount = new HashMap<>();
-        pts = new ArrayList<>();
+        map = new HashMap<>();
+        list = new ArrayList<>();
     }
     
     public void add(int[] point) {
-                List<Integer> p = Arrays.asList(point[0], point[1]);
-        ptsCount.put(p, ptsCount.getOrDefault(p, 0) + 1);
-        pts.add(p);
-
+        List<Integer> l1 = new ArrayList<>();
+        l1.add(point[0]);
+        l1.add(point[1]);
+        list.add(l1);
+        map.put(l1, map.getOrDefault(l1,0)+1);
     }
+
     
     public int count(int[] point) {
-        int res = 0;
-        int px = point[0], py = point[1];
-        for (List<Integer> pt : pts) {
-            int x = pt.get(0), y = pt.get(1);
-            if (Math.abs(py - y) != Math.abs(px - x) || x == px || y == py) {
-                continue;
+        int px = point[0];
+        int py = point[1];
+        int res=0;
+        for(List<Integer> l : list){
+            int x = l.get(0);
+            int y = l.get(1);
+            if(Math.abs(px-x) == Math.abs(py-y) && x!=px && y!=py){
+                List<Integer> l1 = new ArrayList<>();
+                List<Integer> l2 = new ArrayList<>();
+                l1.add(x);
+                l1.add(py);
+                l2.add(px);
+                l2.add(y);
+                res+=map.getOrDefault(l1,0)*map.getOrDefault(l2,0);
             }
-            res += ptsCount.getOrDefault(Arrays.asList(x, py), 0) * 
-                   ptsCount.getOrDefault(Arrays.asList(px, y), 0);
         }
+
         return res;
     }
 }
