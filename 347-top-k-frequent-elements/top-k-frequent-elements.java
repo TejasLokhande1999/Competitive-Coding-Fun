@@ -7,7 +7,7 @@ class Solution {
             map.put(nums[i], map.getOrDefault(nums[i],0)+1);
         }
 
-        PriorityQueue<Pair> pq = new PriorityQueue<>(new PairComparator());
+        PriorityQueue<Pair> pq = new PriorityQueue<>((a,b)-> a.freq - b.freq);
 
         for(Map.Entry<Integer, Integer> entry : map.entrySet()){
 
