@@ -1,82 +1,81 @@
 class Twitter {
 
+    int time;
     Map<Integer, Set<Integer>> following;
-    Map<Integer, List<Pair>> map;
-    int timer;
+    Map<Integer,List<Pair>> map;
     public Twitter() {
-        following = new HashMap<>();
+        time = 0;
         map = new HashMap<>();
-        timer=0;
+        following = new HashMap<>();
+
     }
     
     public void postTweet(int userId, int tweetId) {
-        map.putIfAbsent(userId, new ArrayList<Pair>());
-        map.get(userId).add(new Pair(tweetId,timer));
-        timer+=1;
+        
+        map.putIfAbsent(userId, new ArrayList<>());
+
+        map.get(userId).add(new Pair(time,tweetId));
+        time = time+1;
     }
     
     public List<Integer> getNewsFeed(int userId) {
-        List<Integer> userIds = new ArrayList<>();
-        userIds.add(userId);
+        List<Integer> list = new ArrayList<>();
+        list.add(userId);
         if(following.get(userId) != null)
-            userIds.addAll(following.get(userId));
+            list.addAll(following.get(userId));
+        List<Pair> p= new ArrayList<>();
 
-        List<Pair> tweetIds = new ArrayList<>();
-        for(int i=0;i<userIds.size();i++){
-            if(map.get(userIds.get(i))!=null)
-                tweetIds.addAll(map.get(userIds.get(i)));
-        }
+        for(int i=0;i<list.size();i++){
 
-        Collections.sort(tweetIds, new PairComparator());
-
-        List<Integer> retList = new ArrayList<>();
-        for(int i=0;i<tweetIds.size();i++){
-            Pair p = tweetIds.get(i);
-            retList.add(p.tweetId);
-            if(i==9){
-                return retList;
+            if(map.get(list.get(i))!=null){
+                p.addAll(map.get(list.get(i)));
             }
+
+        }
+        Collections.sort(p, (a,b)->b.time-a.time);
+    
+        List<Integer> tweets = new ArrayList<>();
+        if(p.size()<10)
+        {
+            for(int i=0;i<p.size();i++){
+                tweets.add(p.get(i).tweetId);
+            }
+
+            return tweets;
         }
 
-        return retList;
+        for(int i=0;i<10;i++){
+                tweets.add(p.get(i).tweetId);
+            }
+
+            return tweets;
+
+
     }
     
     public void follow(int followerId, int followeeId) {
-        following.putIfAbsent(followerId, new HashSet<Integer>());
+        following.putIfAbsent(followerId, new HashSet<>());
         following.get(followerId).add(followeeId);
     }
     
     public void unfollow(int followerId, int followeeId) {
-        Set<Integer> removeL = following.get(followerId);
-        if(removeL!=null)
-            removeL.remove(followeeId);
-        following.put(followerId,removeL);
+        Set<Integer> set = following.get(followerId);
+        if(set!=null){
+            set.remove(followeeId);
+            following.put(followerId,set);
+        }
+        
     }
 }
 
 class Pair{
 
-    int tweetId;
     int time;
+    int tweetId;
 
-    Pair(int tweetId, int time){
-        this.tweetId = tweetId;
+    Pair(int time, int tweetId){
         this.time = time;
-    }
-
-}
-
-class PairComparator implements Comparator<Pair>{
-
-    public int compare(Pair p1, Pair p2){
-        //sort in descending
-        if(p1.time>p2.time){
-            return -1;
-        }else if(p1.time<p2.time){
-            return 1;
-        }else{
-            return 0;
-        }
+        this.tweetId = tweetId;
     }
 
 }
