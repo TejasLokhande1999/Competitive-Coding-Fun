@@ -13,9 +13,8 @@ class Solution {
         PriorityQueue<Pair> pq = new PriorityQueue<>((a,b)-> b.freq - a.freq);
 
         for(Map.Entry<Character, Integer> entry : map.entrySet()){
-            char ch = entry.getKey();
             int freq = entry.getValue();
-            pq.add(new Pair(ch,freq,0));
+            pq.add(new Pair(freq,0));
         }
 
 
@@ -24,17 +23,15 @@ class Solution {
 
         
         while (!pq.isEmpty() || !q.isEmpty()) {
-            time++;  // Each iteration represents one unit of time
+            time++; 
 
-            // Step 4: If a task is ready to be executed
             if (!pq.isEmpty()) {
                 Pair p = pq.poll();
-                if (p.freq - 1 > 0) { // Only add back if tasks remain
-                    q.add(new Pair(p.ch, p.freq - 1, time + n));
+                if (p.freq - 1 > 0) { 
+                    q.add(new Pair(p.freq - 1, time + n));
                 }
             }
 
-            // Step 5: Check if any task in the queue is ready to be re-added
             if (!q.isEmpty() && q.peek().time <= time) {
                 pq.add(q.poll());
             }
@@ -46,12 +43,10 @@ class Solution {
 
 class Pair{
 
-    char ch;
     int freq;
     int time;
 
-    Pair(char ch, int freq, int time){
-        this.ch = ch;
+    Pair(int freq, int time){
         this.freq = freq;
         this.time = time;
     }
