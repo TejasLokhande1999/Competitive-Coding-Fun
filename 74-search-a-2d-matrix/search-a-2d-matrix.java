@@ -1,60 +1,33 @@
 class Solution {
     public boolean searchMatrix(int[][] matrix, int target) {
+        int rows = matrix.length;
+        int cols = matrix[0].length;
 
-        int m = matrix.length;      //no of rows
+        int left = 0;
+        int right = rows*cols-1;
 
-        int n = matrix[0].length;   //no of cols
-
-        int start=0;
-        int end = m*n-1;
-
-        while(start<=end){
-            int mid = start + (end-start)/2;
-
-            int row = mid/n;
-            int col = mid%n;
-
-            if(matrix[row][col]==target){
-                return true;
-            }else if(matrix[row][col]<target){
-                start = mid+1;
-            }else{
-                end = mid-1;
-            }
+        while(left<=right){
             
+            int mid = left+(right-left)/2;
+            int n = mid/cols;
+            int m = mid%cols;
+
+            if(matrix[n][m]==target){
+                return true;
+            }else if(matrix[n][m]<target){
+                left = mid+1;
+            }else{
+                right = mid-1;
+            }
+
         }
 
-    return false;
-
-
-
-
-    //    int n = matrix.length;
-    //    int m = matrix[0].length;
-
-    //    int start = 0;
-    //    int end = n*m -1;
-
-    //    while(start<=end){
-    //     int mid = start+(end-start)/2;
-
-    //     int row = mid/m;
-    //     int col = mid%m;
-
-    //     if(matrix[row][col]==ele){
-    //         return true;
-    //     }else if(matrix[row][col]<ele){
-    //         start = mid+1;
-    //     }else{
-    //         end = mid-1;
-    //     }
-
-    //    } 
-
-    //    return false;
-       
-
+        return false;
     }
-
-    
 }
+
+
+
+
+// n*m = 12
+// 0 1 2 3 4 5 6 7 8 9 10 11 
