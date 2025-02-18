@@ -1,60 +1,31 @@
 class Solution {
     public List<List<String>> suggestedProducts(String[] products, String searchWord) {
-        Arrays.sort(products);
-        Trie obj = new Trie();
-        for(String product : products){
-            obj.insert(product);
-        }
-
+        PriorityQueue<String> pq = new PriorityQueue<>(Collections.reverseOrder());
         List<List<String>> retList = new ArrayList<>();
-
-        for(int i=0;i<searchWord.length();i++){
-            String src = searchWord.substring(0,i+1);
-            List<String> str = obj.search(src);
-            retList.add(str);
+    for(int i=1;i<=searchWord.length();i++)
+    {
+        String childStr = searchWord.substring(0,i);
+        List<String> list = new ArrayList<>();
+        for(String product : products){
+            if(product.startsWith(childStr))
+            {
+                pq.add(product);
+                if(pq.size()>3){
+                    pq.poll();
+                }
+            }
         }
+
+        while(!pq.isEmpty()){
+            list.addFirst(pq.poll());
+        }
+            retList.add(list);
+
+    }
 
         return retList;
 
-    }
-}
-class Trie{
 
-    static class Node{
-        Map<Character, Node> map = new HashMap<>();
-        ArrayList<String> list = new ArrayList<>();
     }
 
-    Node root;
-    Trie(){
-        root=new Node();
-    }
-
-
-    public void insert(String word){
-        Node currNode = root;
-
-        for(char ch : word.toCharArray()){
-            if(!currNode.map.containsKey(ch)){
-                currNode.map.put(ch, new Node());
-            }
-            currNode = currNode.map.get(ch);    //go to the new node
-            if(currNode.list.size()<3){
-                currNode.list.add(word);
-            }
-        }
-    }
-
-    public List<String> search(String word){
-                Node currNode = root;
-
-        for(char ch : word.toCharArray()){
-            if(!currNode.map.containsKey(ch)){
-                return new ArrayList<>();
-            }
-            currNode = currNode.map.get(ch);
-        }
-
-        return currNode.list;
-    }
 }
