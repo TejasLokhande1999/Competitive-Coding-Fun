@@ -1,78 +1,67 @@
 class TimeMap {
 
-    HashMap<String, ArrayList<Pair>> map;
-
+    Map<String, List<Pair>> map;
     public TimeMap() {
         map = new HashMap<>();
     }
     
     public void set(String key, String value, int timestamp) {
-        
-        ArrayList<Pair> list = map.getOrDefault(key, new ArrayList<>());
-
-        list.add(new Pair(value,timestamp));
-
-        map.put(key,list);
-        //map.put(key, map.getOrDefault(key, new ArrayList<>()).add(new Pair(value, timestamp)));
-
+        map.putIfAbsent(key, new ArrayList<>());
+        map.get(key).add(new Pair(value,timestamp));
     }
     
     public String get(String key, int timestamp) {
-        ArrayList<Pair> list = new ArrayList<>();
-
-        list = map.get(key);
+        
+        List<Pair> list = map.get(key);
         if(list==null){
             return "";
         }
-        //Collections.sort(list, new PairComparator());
+        if(list.get(0).time>timestamp){
+            return "";
+        }else{
 
-        return binSearch(list,timestamp);
+            String str = binarySearchFloor(list,timestamp);
+            return str;
+        }
     }
 
-    public String binSearch(ArrayList<Pair> list, int ele){
-        int start = 0;
-        int end = list.size()-1;
-        String str="";
-        while(start<=end){
-            int mid = start+ (end-start)/2;
+    public String binarySearchFloor(List<Pair> list, int timestamp){
+
+        int left = 0;
+        int right = list.size()-1;
+        String str = "";
+        while(left<=right){
+            int mid = right+(left-right)/2;
 
             Pair p = list.get(mid);
-            if(p.timestamp==ele){
-                return p.value;
-            }else if(p.timestamp<ele){
-                str = list.get(start).value;
-                start = mid+1;
+
+            if(p.time<timestamp){
+                left = mid+1;
+                str = p.value;
+            }else if(p.time>timestamp){
+                right = mid-1;
             }else{
-                end = mid-1;
+                str = p.value;
+                break;
             }
         }
+
         return str;
+
     }
 }
-
 class Pair{
 
-    int timestamp;
     String value;
+    int time;
 
-    Pair(String value, int timestamp){
-        this.timestamp = timestamp;
+    Pair(String value, int time){
         this.value = value;
+        this.time = time;
     }
+
 }
 
-class PairComparator implements Comparator<Pair>{
-
-    public int compare(Pair p1, Pair p2){
-        if(p1.timestamp>p2.timestamp){
-            return 1;
-        }else if(p1.timestamp<p2.timestamp){
-            return -1;
-        }else{
-            return 0;
-        }
-    }
-}
 /**
  * Your TimeMap object will be instantiated and called as such:
  * TimeMap obj = new TimeMap();
