@@ -1,41 +1,44 @@
 class Solution {
     public int[][] insert(int[][] intervals, int[] newInterval) {
         
-        List<int[]> list = new ArrayList<>();
+        List<List<Integer>> list = new ArrayList<>();
+        int newStart = newInterval[0];
+        int newEnd = newInterval[1];
+        int count=0;
+        List<int[]> temp = new ArrayList<>();
 
-    int i=0;
-    int n = intervals.length;
+        for(int interval[] : intervals){
+            int start = interval[0];
+            int end = interval[1];
 
-    int Istart = newInterval[0];
-    int Iend = newInterval[1];
-    while(i<n && intervals[i][1]<Istart){
+            if(end<newStart){
+                temp.add(new int[]{start,end});
+                count+=1;
+            }
+        }
 
-        list.add(new int[]{intervals[i][0],intervals[i][1]});
-        i++;
-    }
+        int count2=count;
+        for(int i=count;i<intervals.length;i++){
+            int start = intervals[i][0];
+            int end = intervals[i][1];
+            if(start<=newEnd){
+                newEnd = Math.max(newEnd,end);
+                newStart= Math.min(newStart,start);
+                count2+=1;
+            }else{
+                break;
+            }
+        }
 
-    //now we reach end
-    // end<Istart is false
+        temp.add(new int[]{newStart,newEnd});
 
-    //now the range is start<=Iend
+        for(int i=count2;i<intervals.length;i++){
+            temp.add(new int[]{intervals[i][0],intervals[i][1]});
+        }
 
-    while(i<n && intervals[i][0]<=Iend){
-
-        Istart = Math.min(Istart,intervals[i][0]);
-        Iend = Math.max(Iend,intervals[i][1]);
-        i++;
-    }
-
-    list.add(new int[]{Istart, Iend});
+        return temp.toArray(new int[temp.size()][]);
 
 
-    while(i<n){
-
-        list.add(intervals[i]);
-        i++;
-    }
-
-    return list.toArray(new int[list.size()][]);
 
     }
 }
