@@ -1,41 +1,77 @@
 class Solution {
+
     public int numIslands(char[][] grid) {
         
-        int rows = grid.length;
-        int cols = grid[0].length;
+        int m = grid.length;
+        int n = grid[0].length;
 
-        boolean visited[][]= new boolean[rows][cols];
+        boolean visited[][] = new boolean[m][n];
         int count=0;
-        for(int i=0;i<rows;i++){
-            for(int j=0;j<cols;j++){
-                
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
                 if(!visited[i][j] && grid[i][j]=='1'){
+                    bfs(i,j,grid,visited);
                     count+=1;
-                    dfs(i,j,grid,visited);
                 }
-
             }
         }
 
         return count;
 
-
     }
 
+    public void bfs(int row, int col, char[][] grid, boolean[][] visited){
 
-    public void dfs(int row, int col, char[][] grid, boolean visited[][]){
-        int n = grid.length;
-        int m = grid[0].length;
-        if(row>=n || row<0 || col>=m || col<0 || visited[row][col] || grid[row][col]=='0'){
-            return;
+        Queue<Pair> q = new LinkedList<>();
+
+        int m = grid.length;
+        int n = grid[0].length;
+        q.add(new Pair(row,col));
+        visited[row][col]=true;
+
+        while(!q.isEmpty()){
+
+            Pair p = q.poll();
+
+            int r = p.row;
+            int c = p.col;
+
+            int dir[][] = {{0,1},{1,0},{0,-1},{-1,0}};
+
+            for(int i=0;i<4;i++){
+                
+                int nRow = r+dir[i][0];
+                int nCol = c+dir[i][1];
+
+                //check if within limits
+
+                if(nRow>=0 && nRow<m && nCol>=0 && nCol<n && !visited[nRow][nCol]
+                && grid[nRow][nCol]=='1'){
+
+                    q.add(new Pair(nRow,nCol));
+                    visited[nRow][nCol] = true;
+                }
+
+            }
+
         }
 
-        visited[row][col] = true;
-
-        dfs(row-1,col,grid,visited);
-        dfs(row+1,col,grid,visited);
-        dfs(row,col-1,grid,visited);
-        dfs(row,col+1,grid,visited);
 
     }
 }
+
+class Pair{
+    int row;
+    int col;
+
+    Pair(int row, int col){
+        this.row = row;
+        this.col = col;
+    }
+}
+
+
+
+//            0,1
+//-1,0                      1,0
+//            0,-1
