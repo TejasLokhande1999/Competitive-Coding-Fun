@@ -26,53 +26,42 @@ class Solution {
         if(root==null){
             return null;
         }
-
+        List<List<Node>> list = new ArrayList<>();
         Queue<Node> q= new LinkedList<>();
         q.add(root);
-        while(!q.isEmpty()){
-            int level = q.size();
-            List<Node> subList = new ArrayList<>();
-            for(int i=0;i<level;i++){
 
+        while(!q.isEmpty()){
+            int size = q.size();
+            List<Node> tempList = new ArrayList<>();
+            for(int i=0;i<size;i++){
                 Node node = q.poll();
-                subList.add(node);
 
                 if(node.left!=null){
                     q.add(node.left);
                 }
-
                 if(node.right!=null){
                     q.add(node.right);
                 }
+                tempList.add(node);
             }
+            list.add(tempList);
+        }
 
-            generateRight(subList);
 
+        for(List<Node> l : list){
+
+            int n = l.size();
+            for(int i=0;i<n;i++){
+
+                Node node = l.get(i);
+                if(i<n-1){
+                    node.next = l.get(i+1);
+                }else{
+                    node.next=null;
+                }
+            }
         }
 
         return root;
-    }
-
-    public void generateRight(List<Node> list){
-
-        if(list.size()==1){
-            Node node = list.get(0);
-            node.next=null;
-            return;
-        }else{
-
-                int n = list.size();
-
-                for(int i=0;i<n-1;i++){
-                    Node first = list.get(i);
-                    Node second = list.get(i+1);
-
-                    first.next = second;
-                }
-
-                list.get(n-1).next = null; 
-
-        }
-
     }
 }
