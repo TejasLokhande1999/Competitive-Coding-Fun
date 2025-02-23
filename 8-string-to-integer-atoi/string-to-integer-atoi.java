@@ -1,26 +1,57 @@
 class Solution {
     public int myAtoi(String s) {
-        long ans = 0;
+        
+        if(s.isEmpty()){
+            return 0;
+        }
+        s=s.trim();
+
+        if(s.isEmpty()){
+            return 0;
+        }
         int sign = 1;
-        int i = 0;
-
-        // Skip leading whitespace
-       // while (i < s.length() && s.charAt(i) == ' ') i++;
-        s =s.trim();
-        // Check for sign
-        if (i < s.length() && (s.charAt(i) == '-' || s.charAt(i) == '+')) {
-            sign = (s.charAt(i) == '-') ? -1 : 1;
-            i++;
+        int index=0;
+        if(s.charAt(0)=='-'){
+            sign = -1;
+            index=1;
+        }else if(s.charAt(0)=='+'){
+            index=1;
         }
 
-        // Convert the digits to an integer
-        while (i < s.length() && Character.isDigit(s.charAt(i))) {
-            ans = ans * 10 + (s.charAt(i) - '0');
-            if (ans * sign <= Integer.MIN_VALUE) return Integer.MIN_VALUE;
-            if (ans * sign >= Integer.MAX_VALUE) return Integer.MAX_VALUE;
-            i++;
+
+        long ans=0;
+
+
+        for(int i=index;i<s.length();i++){
+
+            char ch = s.charAt(i);
+
+            if(Character.isDigit(ch)){
+                int digit = ch-'0';
+                ans = ans*10 + digit;
+
+                if (sign == 1 && ans > Integer.MAX_VALUE) {
+                return Integer.MAX_VALUE;
+            }
+            if (sign == -1 && -ans < Integer.MIN_VALUE) {
+                return Integer.MIN_VALUE;
+            }
+
+            }else{
+                break;
+            }
+
         }
 
-        return (int) ans * sign;
+        if(sign==-1){
+            ans = ans*-1;        
+                return (int)ans;
+        }else{
+            
+                return (int)ans;
+            
+        }
+
+
     }
 }
