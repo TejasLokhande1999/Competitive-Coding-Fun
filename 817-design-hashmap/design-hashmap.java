@@ -1,7 +1,7 @@
 class MyHashMap {
 
     LinkedList<Entry> map[];
-
+    int size;
     public MyHashMap() {
         map = new LinkedList[1000];
         for(int i=0;i<1000;i++){
@@ -12,15 +12,14 @@ class MyHashMap {
     public void put(int key, int value) {
         int bucket = key%1000;
         LinkedList<Entry> entries = map[bucket];
-
-        for(Entry entry :entries){
+        for(Entry entry : entries){
             if(entry.key==key){
-                entry.value=value;
+                entry.value = value;
                 return;
             }
         }
 
-        entries.add(new Entry(key,value));
+      entries.add(new Entry(key,value));
     }
     
     public int get(int key) {
@@ -28,42 +27,39 @@ class MyHashMap {
         LinkedList<Entry> entries = map[bucket];
 
         for(Entry entry : entries){
+
             if(entry.key==key){
                 return entry.value;
             }
-        }
 
-        return -1;
-
+    }
+    return -1;
     }
     
     public void remove(int key) {
         int bucket = key%1000;
         LinkedList<Entry> entries = map[bucket];
 
+
         for(Entry entry : entries){
             if(entry.key==key){
                 entries.remove(entry);
                 return;
             }
-        }
-
-        return;
+    }
     }
 }
 
-public class Entry{
 
+class Entry{
     int key;
     int value;
 
-    public Entry(int key, int value){
+    Entry(int key, int value){
         this.key = key;
         this.value = value;
     }
-
 }
-
 /**
  * Your MyHashMap object will be instantiated and called as such:
  * MyHashMap obj = new MyHashMap();
