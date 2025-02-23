@@ -1,45 +1,47 @@
 class Solution {
     public int maxAreaOfIsland(int[][] grid) {
-        int n = grid.length;
-        int m = grid[0].length;
+
+     int m = grid.length;
+     int n = grid[0].length;
+
+     boolean visited[][] = new boolean[m][n];
+
+    int maxCount = 0;
 
 
-        int max = 0;
-        boolean visited[][] =new boolean[n][m];
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
-
-                    if(grid[i][j]==1 && !visited[i][j]){
-                        int area = dfs(i,j,grid,visited);
-                        max = Math.max(max,area);
-                    }
-
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            if(!visited[i][j] && grid[i][j]==1){
+                int count = dfs(i,j,grid,visited);
+                maxCount = Math.max(maxCount,count);
+                count=1;
             }
         }
-
-        return max;
     }
 
+    return maxCount;
 
-    public int dfs(int row, int col, int[][] grid, boolean[][] visited){
+    }
 
-        int n = grid.length;
-        int m = grid[0].length;
+    public int dfs(int i, int j, int grid[][], boolean visited[][]){
 
-        if(row<0 || row>=n || col<0 || col>=m || visited[row][col]==true || grid[row][col]==0){
+        int rows = grid.length;
+        int cols = grid[0].length;
+
+        if(i<0 || i>=rows || j<0 || j>=cols || visited[i][j] || grid[i][j]==0){
             return 0;
         }
 
-        visited[row][col] = true;
+       int count=1;
+        visited[i][j] = true;
 
-        int val = 1;
 
-        val+=dfs(row+1,col,grid,visited);
-        val+=dfs(row-1,col,grid,visited);
-       val+= dfs(row,col+1,grid,visited);
-       val+= dfs(row,col-1,grid,visited);
+        count+=dfs(i-1,j,grid,visited);
+        count+=dfs(i+1,j,grid,visited);
+        count+=dfs(i,j-1,grid,visited);
+        count+=dfs(i,j+1,grid,visited);
 
-        return val;
-
+        
+        return count;
     }
 }
