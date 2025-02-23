@@ -1,32 +1,36 @@
 class Solution {
-    public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
         
-        int oldColor= image[sr][sc];
-
-        if(oldColor==newColor){
+        if(image[sr][sc]==color){
             return image;
-        }else{
-            dfs(sr,sc,image,oldColor,newColor);
         }
 
+        int m = image.length;
+        int n = image[0].length;
+
+        boolean visited[][] = new boolean[m][n];
+        int oldColor = image[sr][sc];
+        dfs(image,sr,sc,color,oldColor,visited);
+
         return image;
+
     }
 
-    public void dfs(int row, int col, int[][] grid, int oldColor, int newColor){
+    public void dfs(int[][] grid, int i, int j, int newColor,int oldColor, boolean[][] visited){
 
         int m = grid.length;
         int n = grid[0].length;
-
-        if(row<0 || row>=m || col<0 || col>=n || grid[row][col]!=oldColor){
+        if(i<0 || i>=m || j<0 || j>=n || visited[i][j] || grid[i][j]!=oldColor){
             return;
         }
 
-        grid[row][col]=newColor;
+        visited[i][j]=true;
+        grid[i][j]= newColor;
 
-        dfs(row+1,col,grid,oldColor,newColor);
-        dfs(row-1,col,grid,oldColor,newColor);
-        dfs(row,col+1,grid,oldColor,newColor);
-        dfs(row,col-1,grid,oldColor,newColor);
+        dfs(grid,i+1,j,newColor,oldColor,visited);
+        dfs(grid,i-1,j,newColor,oldColor,visited);
+        dfs(grid,i,j+1,newColor,oldColor,visited);
+        dfs(grid,i,j-1,newColor,oldColor,visited);
 
 
 
