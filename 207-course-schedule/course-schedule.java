@@ -1,52 +1,56 @@
 class Solution {
-    public boolean canFinish(int numCourses, int[][] prereq) {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        
+        List<List<Integer>> adj = new ArrayList<>();
+
         int V = numCourses;
 
-        List<List<Integer>> adj = new ArrayList<>();
         for(int i=0;i<V;i++){
             adj.add(new ArrayList<>());
         }
 
-        int m = prereq.length;
-        //create adj
-        for(int i=0;i<m;i++){
-            int u = prereq[i][1];
-            int v = prereq[i][0];
-
+        for(int[] arr : prerequisites){
+            int u = arr[1];
+            int v = arr[0];
             adj.get(u).add(v);
-
         }
 
-        int indegree[] = new int[V];
+        //generate indegree
 
-        for(int i=0;i<adj.size();i++){
-            List<Integer> list = adj.get(i);
-            for(int j=0;j<list.size();j++){
-                indegree[list.get(j)]+=1;
+        int indegree[] = new int[V];
+        for(List<Integer> list : adj){
+            for(Integer i : list){
+                indegree[i]+=1;
             }
         }
 
         Queue<Integer> q = new LinkedList<>();
-        for(int i=0;i<indegree.length;i++){
+        List<Integer> topo = new ArrayList<>();
+        boolean visited[] = new boolean[V];
+
+        for(int i=0;i<V;i++){
             if(indegree[i]==0){
                 q.add(i);
+                visited[i] = true;
             }
         }
 
-        List<Integer> topo = new ArrayList<>();
+
         while(!q.isEmpty()){
 
             int currNode = q.poll();
             topo.add(currNode);
 
-            List<Integer> temp = adj.get(currNode);
-            for(int i=0;i<temp.size();i++){
-                int node = temp.get(i);
+            List<Integer> l = adj.get(currNode);
 
-                indegree[node]-=1;
+            for(Integer i : l){
 
-                if(indegree[node]==0){
-                    q.add(node);
+                if(!visited[i]){
+                    indegree[i]--;
+                    if(indegree[i]==0){
+                        q.add(i);
+                        
+                    }
                 }
             }
 
@@ -57,6 +61,8 @@ class Solution {
         }
 
         return false;
+
+
 
 
     }
