@@ -1,55 +1,48 @@
 class Solution {
     public int lengthOfLIS(int[] nums) {
-        ArrayList<Integer> list = new ArrayList<>();
         if(nums.length==1){
             return 1;
         }
-        for(int i=0; i <nums.length;i++){
-            int size = list.size();
-            if(i==0){
-                list.add(nums[i]);
-            }else if(list.get(size-1)<nums[i]){
-                    list.add(nums[i]);
+
+        List<Integer> temp = new ArrayList<>();
+
+        temp.add(nums[0]);
+        for(int i=1;i<nums.length;i++){
+            if(nums[i]> temp.get(temp.size()-1)){
+                temp.add(nums[i]);
             }else{
-                
-                int index = binarySearch(list,nums[i]);
-                if(index==-1){
-                    continue;
-                }else{
 
-                    int currEle = nums[i];
-                    if(currEle<list.get(index));
-                    list.set(index,currEle);
-                }
+                //get the index of element just greater that number
+                int index = binSearch(temp,nums[i]);
+                temp.set(index,nums[i]);
             }
-
-
         }
 
-        return list.size();
 
-
+        return temp.size();
     }
 
-    public int binarySearch(ArrayList<Integer> nums, int ele){
-        int start = 0;
-        int n = nums.size();
-        int end = n-1;
-        int index = -1;
-        while(start<=end){
+    public int binSearch(List<Integer> list, int ele){
 
-            int mid = start + (end-start)/2;
-            if(nums.get(mid)==ele){
+        int l = 0;
+        int n = list.size();
+        int r = n-1;
+        int index=-1;
+
+        while(l<=r){
+            int mid = l + (r-l)/2;
+
+            if(list.get(mid)==ele){
                 return mid;
-            }else if(nums.get(mid)<ele){
-                start = mid+1;
-            }else{      //arr[mid]>ele
+            }else if(list.get(mid)<ele){
+                l = mid+1;
+            }else{
                 index = mid;
-                end = mid-1;
+                r = mid-1;
             }
+    }
 
-        }
+    return index;
 
-        return index;
     }
 }
