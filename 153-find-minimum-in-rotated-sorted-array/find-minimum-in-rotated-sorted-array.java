@@ -1,25 +1,33 @@
 class Solution {
-    public int findMin(int[] arr) {
-        int start=0;
-        int end = arr.length-1;
-        int n = arr.length;
-
-        while(start<=end){
-            int mid = start+(end-start)/2;
-
-            if(arr[start]<arr[end]){
-                return arr[start];
-            }
-            if(arr[mid]<=arr[(mid-1+n)%n] && arr[mid]<=arr[(mid+1)%n]){
-                return arr[mid];
-            }else if(arr[mid]>=arr[start]){
-                start = mid+1;   //go to unsorted portion
-            }else{
-                end = mid-1;
-            }
+    public int findMin(int[] nums) {
+        
+        int n = nums.length;
+        if(n==1){
+            return nums[0];
         }
 
-        return -1;
+        if(nums[0]<nums[n-1]){
+            return nums[0];
+        }
 
+
+        int l = 0;
+        int r = n-1;
+        while(l<=r){
+            int mid = l+(r-l)/2;
+            int ele = nums[mid];
+            if(nums[l]<nums[r]){
+                return nums[l];
+            }
+            if(ele<=nums[(mid-1+n)%n] && ele<=nums[(mid+1)%n]){
+                return ele;
+            }else if(nums[l]<=nums[mid]){
+               //check if left protaion sorted, then move to right
+               l = mid+1; 
+            }else{
+                r = mid-1;
+            }
+        }
+        return 0;
     }
 }
