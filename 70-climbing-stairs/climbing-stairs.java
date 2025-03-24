@@ -1,19 +1,13 @@
 class Solution {
+    int dp[];
     public int climbStairs(int n) {
-        
-        int cache[] = new int[n+1];
-
-        for(int i=0;i<n+1;i++){
-            cache[i] = -1;
-        }
-
-
-        int val = dfs(0,n,cache);
-
-        return val;
+        dp = new int[n];
+        Arrays.fill(dp,-1);
+       return dfs(0,n);
     }
 
-    public int dfs(int i,int n, int[] cache){
+
+    public int dfs(int i, int n){
 
         if(i>n){
             return 0;
@@ -22,14 +16,9 @@ class Solution {
             return 1;
         }
 
-        if(cache[i]!=-1){
-            return cache[i];
+        if(dp[i]!=-1){
+            return dp[i];
         }
-
-        return cache[i] = dfs(i+1,n,cache) + dfs(i+2,n,cache);
-
-
+        return dp[i] = dfs(i+1,n)+dfs(i+2,n);
     }
-
-
 }
