@@ -1,14 +1,12 @@
 class Solution {
+    int dp[];
     public int numDecodings(String s) {
-        int n = s.length();
-        int dp[] = new int[n];
-
+        dp = new int[s.length()];
         Arrays.fill(dp,-1);
-
-        return func(s,0,dp);
+        return dfs(0,s);
     }
 
-    public int func(String s, int i, int dp[]){
+    public int dfs(int i, String s){
 
         if(i==s.length()){
             return 1;
@@ -19,15 +17,15 @@ class Solution {
         if(dp[i]!=-1){
             return dp[i];
         }
-        int count =0;
-        count+=func(s,i+1,dp);
 
-        if(i<s.length()-1 && (s.charAt(i)=='1' || s.charAt(i)=='2' && s.charAt(i+1)<'7' ) ){
-            count+=func(s,i+2,dp);
+        int count = 0;
+        count = dfs(i+1,s);
+
+        if(i<s.length()-1 && (s.charAt(i)=='1' || (s.charAt(i)=='2'&& s.charAt(i+1)<'7'))){
+            count+=dfs(i+2,s);
         }
-        dp[i] = count;
 
-        return dp[i];
+        return dp[i] = count;
 
 
     }
