@@ -1,41 +1,40 @@
 class Solution {
+    int t[][];
     public int change(int amount, int[] coins) {
-        
         int n = coins.length;
-        int S = amount;
+        t = new int[n+1][amount+1];
 
-        int t[][] = new int[n+1][S+1];
+        for(int i=0;i<n;i++){
+            Arrays.fill(t[i],-1);
+        }
+        return dfs(0,n,coins,amount);
+    }
 
-        for(int i=0;i<n+1;i++){
-            for(int j=0;j<S+1;j++){
-                t[i][j]=-1;
+
+    public int dfs(int i, int n, int coins[], int amount){
+            if(i==n){
+                return 0;
             }
-        }
+            if(amount==0){
+                return 1;
+            }
+            if(amount<0){
+                return 0;
+            }
+            if(t[i][amount]!=-1){
+                return t[i][amount];
+            }
 
-        return knap(coins,n,S,t);
+            if(coins[i]<=amount){
+                return t[i][amount] = dfs(i,n,coins,amount-coins[i])+dfs(i+1,n,coins,amount);
+            }else{
 
-    }
+                return t[i][amount] = dfs(i+1,n,coins,amount);
 
-    public int knap(int coins[], int n, int S, int t[][]){
-
-        if(S==0){
-            return 1;   //we found 1 way
-        }
-        if(S<0 || n==0){
-            return 0;      //No way found
-        }
-        if(t[n][S]!=-1){
-            return t[n][S];
-        }
-        if(coins[n-1]<=S){
-            //take it andd not not take it
-
-            return t[n][S] = knap(coins,n,S-coins[n-1],t) + knap(coins,n-1,S,t);
-
-        }else{
-
-            return t[n][S]= knap(coins,n-1,S,t);
-        }
+            }
 
     }
+
+
+
 }
