@@ -1,31 +1,32 @@
 class Solution {
     public int maxNumberOfBalloons(String text) {
-        int count=0;
-
-        String str = "balloon";
-
-        Map<Character, Integer> map = new HashMap<>();
+        HashMap<Character, Integer> map = new HashMap<>();
 
         for(char ch : text.toCharArray()){
-            map.put(ch,map.getOrDefault(ch,0)+1);
-        }
 
-        while(true){
-
-            for(char ch : str.toCharArray()){
-
-                if(map.containsKey(ch)){
-
-                    if(map.get(ch)>0){
-                        map.put(ch,map.getOrDefault(ch,0)-1);
-                    }else{
-                        return count;
-                    }
-                }else{
-                        return count;
-                }
+            if(ch=='b' || ch=='a' || ch=='l' || ch=='o' || ch=='n'){
+                map.put(ch,map.getOrDefault(ch,0)+1);
             }
-            count++;
         }
+
+        int min = Integer.MAX_VALUE;
+
+
+        if(map.size()<5){
+            return 0;
+        }
+
+        for(Map.Entry<Character,Integer> entry : map.entrySet()){
+            char key = entry.getKey();
+            int val = entry.getValue();
+            if(key=='o'||key=='l'){
+                min = Math.min(min,val/2);
+            }else{
+                min = Math.min(min,val);
+            }
+        }
+
+        return min;
+
     }
 }
