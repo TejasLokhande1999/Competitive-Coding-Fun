@@ -12,10 +12,11 @@ class Solution {
         if(i>=n){
             return 0;
         }
+
         if(dp[i]!=-1){
             return dp[i];
         }
-
-        return dp[i] =  Math.max(cost[i]+dfs(i+2,n,cost),dfs(i+1,n,cost));
+       
+        return dp[i] = Math.max(cost[i]+dfs(i+2,n,cost),dfs(i+1,n,cost));
     }
 }
