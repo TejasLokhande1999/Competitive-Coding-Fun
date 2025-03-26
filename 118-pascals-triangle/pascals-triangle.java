@@ -1,34 +1,31 @@
 class Solution {
     public List<List<Integer>> generate(int numRows) {
         
-        List<List<Integer>> list = new ArrayList<List<Integer>>();
-        int res;
-        for(int i=1;i<=numRows;i++)
-        {
-            List<Integer> temp = new ArrayList<Integer>();
-            res=1;
-            for(int j=1;j<=i;j++)
-            {
-                   temp.add(func_nCr(i-1,j-1));
+        List<List<Integer>> res = new ArrayList<>();
+
+        res.add(new ArrayList<>());
+
+        res.get(0).add(1);
+
+        for(int i=1;i<numRows;i++){
+
+            List<Integer> temp = new ArrayList<>(res.get(i-1));
+
+            //add 0 to 1st and last position
+            temp.add(0,0);
+            temp.add(0);
+
+            List<Integer> newRow = new ArrayList<>();
+
+            for(int j=0;j<temp.size()-1;j++){
+                newRow.add(temp.get(j)+temp.get(j+1));
             }
-            list.add(temp);
-        }
 
-
-        return list;
-    }
-
-
-    public int func_nCr(int r,int c){
-        int res=1;          //also satisfies the base case
-
-        for(int i=0;i<c;i++){
-            res = res*(r-i);
-            res = res/(i+1);
+            res.add(newRow);
         }
 
         return res;
 
-    }
 
+    }
 }
