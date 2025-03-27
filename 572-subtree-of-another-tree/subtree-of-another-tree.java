@@ -15,21 +15,15 @@
  */
 class Solution {
     public boolean isSubtree(TreeNode root, TreeNode subRoot) {
-        
-        Queue<TreeNode> q = new LinkedList<>();
-
-        if(root==null){
-            return false;
-        }
+        Queue<TreeNode> q= new LinkedList<>();
 
         q.add(root);
 
         while(!q.isEmpty()){
-
-            TreeNode node= q.poll();
+            TreeNode node = q.poll();
 
             if(node.val==subRoot.val){
-                boolean flag = isIdentical(node,subRoot);
+                boolean flag = isSameTree(node,subRoot);
                 if(flag){
                     return true;
                 }
@@ -38,28 +32,26 @@ class Solution {
             if(node.left!=null){
                 q.add(node.left);
             }
-
             if(node.right!=null){
                 q.add(node.right);
             }
-
         }
 
         return false;
-
     }
 
-    public boolean isIdentical(TreeNode node1, TreeNode node2){
-        if(node1==null && node2==null){
+    public boolean isSameTree(TreeNode root1, TreeNode root2){
+        if(root1==null && root2==null){
             return true;
         }
 
-        if(node1==null || node2==null){
+        if(root1==null || root2==null){
             return false;
         }
 
-        if(node1.val==node2.val){
-            return isIdentical(node1.left,node2.left)&&isIdentical(node1.right,node2.right);
+        if(root1.val==root2.val){
+
+            return isSameTree(root1.left,root2.left) && isSameTree(root1.right,root2.right);
         }
 
         return false;
