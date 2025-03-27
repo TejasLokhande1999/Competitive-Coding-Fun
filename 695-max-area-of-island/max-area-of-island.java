@@ -14,7 +14,7 @@ class Solution {
             if(!visited[i][j] && grid[i][j]==1){
                 int count = dfs(i,j,grid,visited);
                 maxCount = Math.max(maxCount,count);
-                count=1;
+               // count=1;
             }
         }
     }
