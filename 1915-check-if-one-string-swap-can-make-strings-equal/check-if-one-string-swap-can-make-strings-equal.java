@@ -1,34 +1,38 @@
 class Solution {
     public boolean areAlmostEqual(String s1, String s2) {
-        List<Integer> indices = new ArrayList<>();
+        int n = s1.length();
+        int index1=-1;
+        int index2=-1;
+        int count=0;
+        for(int i=0;i<n;i++){
 
-
-        for(int i=0;i<s1.length();i++){
             char ch1 = s1.charAt(i);
             char ch2 = s2.charAt(i);
-            if(ch1!=ch2){
-                indices.add(i);
-            }
-        }
 
-        if(indices.size()>2 || indices.size()==1){
+            if(ch1!=ch2){
+                count+=1;
+                if(index1==-1){
+                    index1=i;
+                }else{
+                    index2=i;
+                }
+                if(count>2){
+                    return false;
+                }
+            }
+
+        }
+        if(count==1){
             return false;
         }
 
-        if(indices.size()==0){
+        if(count==0){
             return true;
         }
-
-        //indices.length==2
-        int i = indices.get(0);
-        int j = indices.get(1);
-
-        if(s1.charAt(i)==s2.charAt(j) && s1.charAt(j)==s2.charAt(i)){
+        if(s1.charAt(index1)==s2.charAt(index2) && s1.charAt(index2)==s2.charAt(index1)){
             return true;
         }
-
 
         return false;
-
     }
 }
