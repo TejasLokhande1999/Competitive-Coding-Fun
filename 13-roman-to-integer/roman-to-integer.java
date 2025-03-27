@@ -1,5 +1,6 @@
 class Solution {
     public int romanToInt(String s) {
+        
         Map<Character, Integer> map = new HashMap<>();
 
         map.put('I',1);
@@ -11,25 +12,26 @@ class Solution {
         map.put('M',1000);
 
         int sum=0;
+
         for(int i=0;i<s.length();i++){
             char ch = s.charAt(i);
-            int value = map.get(ch);
-
+            int val1 = map.get(ch);
             if(i>0){
-                char chPrev = s.charAt(i-1);
-                int valuePrev = map.get(chPrev);
+                char ch2 = s.charAt(i-1);
+                int val2 = map.get(ch2);
 
-                if(value>valuePrev){
-                    sum-=valuePrev;
-                    sum+=value-valuePrev;
+                if(val2<val1){
+                    sum-=val2;
+                    sum+=val1-val2;
                 }else{
-                    sum+=value;
+                    sum+=val1;
                 }
             }else{
-                sum+=value;
+                sum+=val1;
             }
-
         }
-        return sum;
+
+    return sum;
+
     }
 }
