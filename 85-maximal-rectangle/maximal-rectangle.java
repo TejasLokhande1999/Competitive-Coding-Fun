@@ -1,9 +1,6 @@
 class Solution {
     public int maximalRectangle(char[][] matrix) {
         
-        // if(matrix.length==1){
-        //     return matrix[0][0] - '0';
-        // }
         int m = matrix.length;
         int n = matrix[0].length;
 
