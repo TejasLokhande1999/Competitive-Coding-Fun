@@ -1,23 +1,42 @@
 class Solution {
-    int idx=0; // this index traverse the string in one pass, between different level of recursion
+
+    int index = 0;
     public int calculate(String s) {
-     //   idx = 0; // Initialization should be here
         return calc(s);
     }
-    
-    private int calc(String s) {
-        int res = 0, num = 0, sign = 1;
-        while (idx < s.length()) {
-            char c = s.charAt(idx++);
-            if (c >= '0' && c <= '9') num = num * 10 + c - '0';
-            else if (c == '(') num = calc(s); // ( is start of a new sub-problem, Let recursion solve the sub-problem
-            else if (c == ')') return res + sign * num;
-            else if (c == '+' || c == '-') { // only when we meet a new sign, we know a while number has been read
-                res += sign * num;
-                num = 0;
-                sign = c == '-' ? -1 : 1;
+
+    public int calc(String s){
+
+        int res=0;
+        int num =0;
+        int sign = 1;
+
+        while(index<s.length()){
+
+            char ch = s.charAt(index++);
+            
+            //building the number (If multiple characters)
+            if(Character.isDigit(ch)){
+                num = num*10 + ch-'0';
+            }else if(ch=='+'){
+
+                //get the result
+                res = res+num*sign;
+                sign=1;
+                num=0;
+            }else if(ch=='-'){
+                res = res+num*sign;
+                sign = -1;
+                num=0;
+            }else if(ch=='('){
+                num = calc(s);
+            }else if(ch==')'){
+                res = res+num*sign;
+                return res;
             }
         }
-        return res + sign * num; // last number is not processed yet
+
+        return res+num*sign;
+
     }
 }
