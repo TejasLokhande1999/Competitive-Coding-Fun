@@ -1,65 +1,61 @@
 class Solution {
     public String convert(String s, int numRows) {
-        char grid[][] = new char[numRows][s.length()];
+        int cols = s.length();
+        int index =0;
+        char grid[][] = new char [numRows][cols];
+        int row = 0;
+        int col=0;
+        boolean isDown = true;
 
-        
-        if(s.length()==1){
-            return s;
-        }
         if(numRows==1){
             return s;
         }
-        for(char row[] : grid){
-            Arrays.fill(row, ' ');
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+
+                grid[i][j] = ' ';
+            }
         }
 
+        for(int i=0;i<s.length();i++){
 
-        boolean goingDown = true;
-        int row = 0;
-        int col=0;
+            char ch = s.charAt(i);
 
-        for(char ch : s.toCharArray()){
-
-            if(goingDown){
-                grid[row][col]=ch;
-
+            if(isDown){
+                
+                grid[row][col] = ch;
                 if(row==numRows-1){
-                    goingDown = false;  //we go up
-                    row--;
-                    col++;  //going in the 1st quadrant
+                    isDown = false;
+                    col+=1;
+                    row-=1;
                 }else{
-                    row++;
+                    row+=1;
                 }
-
             }else{
-                //we are going up
+                
                 grid[row][col] = ch;
                 if(row==0){
-                    goingDown = true;
-                    row++;
+                    isDown = true;
+                    row+=1;
                 }else{
-
-                    row--;
-                    col++;
+                    col+=1;
+                    row-=1;
                 }
-
             }
 
         }
 
+        String str = "";
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
 
-        StringBuilder retStr = new StringBuilder();
-
-        for(char currRow[] : grid){
-
-            for(char ch : currRow){
-                if(ch!=' '){
-                    retStr.append(ch);
+                char ch2 = grid[i][j];
+                if(ch2!=' '){
+                    str+=ch2;
                 }
+            }
         }
 
-        }
-
-        return retStr.toString();
+        return str;
     }
 }
