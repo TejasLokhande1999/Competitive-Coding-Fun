@@ -9,28 +9,22 @@
  */
 class Solution {
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if(root==null){
-            return null;
-        }
-
-        if(p.equals(root)||q.equals(root)){
+        
+        if(root==null || root.val ==p.val || root.val==q.val){
             return root;
         }
 
-        TreeNode left = lowestCommonAncestor(root.left,p,q);
-        TreeNode right = lowestCommonAncestor(root.right,p,q);
+        root.left = lowestCommonAncestor(root.left,p,q);
+        root.right = lowestCommonAncestor(root.right,p,q);
 
-        if(left==null){
-            return right;
-        }else if(right==null){
-            return left;
+        if(root.left==null){
+            return root.right;
+        }else if(root.right==null){
+            return root.left;
         }else{
-            //both the nodes has some val so that's the LCA
-
 
             return root;
         }
-
 
     }
 }
