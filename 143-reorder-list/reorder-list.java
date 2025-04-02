@@ -10,47 +10,53 @@
  */
 class Solution {
     public void reorderList(ListNode head) {
-        ListNode slow=head;
-        ListNode fast = slow.next;
-        int slowCount =0;
-        while(fast!=null && fast.next!=null){
-            fast = fast.next.next;
-            slow = slow.next;
-            slowCount++;
-        }
         
+
+        ListNode slow = head;
+        ListNode fast = slow.next;
+
+        while(fast!=null&&fast.next!=null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
         ListNode temp = slow.next;
-        slow.next = null;
+        slow.next=null;
 
-        //Now get the head of new LL
-
-        ListNode head2 = getHead(temp);
         ListNode head1 = head;
+        ListNode head2 = reverse(temp);
+        ListNode curr = head1;
 
         while(head2!=null){
 
-            ListNode next1 = head1.next;
-            ListNode next2 = head2.next;
+            ListNode temp1 = head1.next;
+            ListNode temp2 = head2.next;
 
             head1.next = head2;
-            head2.next = next1;
-            
-            head1 = next1;
-            head2 = next2;
+            head2.next = temp1;
 
+            head1 = temp1;
+            head2 = temp2;
         }
+
     }
 
-    public ListNode getHead(ListNode head){
+
+    public ListNode reverse(ListNode node){
+
+        ListNode curr = node;
         ListNode prev = null;
-        ListNode curr = head;
         ListNode next = null;
+
+
         while(curr!=null){
             next = curr.next;
-            curr.next= prev;
+            curr.next = prev;
             prev = curr;
             curr = next;
         }
+
         return prev;
+
     }
 }
