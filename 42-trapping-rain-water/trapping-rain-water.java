@@ -1,30 +1,76 @@
 class Solution {
-    public int trap(int[] arr) {
+    public int trap(int[] height) {
+        int n = height.length;
+        int ngl[] = new int[n];
+        int ngr[] = new int[n];
+
+        Stack<Integer> s1 = new Stack<>();
+
+        for(int i=0;i<n;i++){
+            int ele = height[i];
+
+
+            if(s1.isEmpty()){
+                ngl[i] = 0;
+                s1.push(ele);
+            }else{
+
+                if(s1.peek()>ele){
+                    ngl[i] = s1.peek();
+                    //don't push
+                    //this is the greatest on the left
+                }else{
+                    ngl[i] = 0;
+                    s1.push(ele);
+                }
+            }
+
+        }
+        // for(int i=0;i<n;i++){
+        //     System.out.print(ngl[i]+" ");
+        // }
+
+        s1.clear();
         
-        int n = arr.length;
-
-        int arrR[] = new int[n];
-        int arrL[] = new int[n];
-
-        int maxL = Integer.MIN_VALUE;
-        int maxR = Integer.MIN_VALUE;
-
-        for(int i=0;i<n;i++){
-            arrL[i] = Math.max(maxL,arr[i]);
-            maxL = Math.max(maxL,arr[i]);
-        }
-
         for(int i=n-1;i>=0;i--){
-            arrR[i] = Math.max(arr[i],maxR);
-            maxR = Math.max(maxR,arr[i]);
+
+            int ele = height[i];
+            if(s1.isEmpty()){
+                ngr[i] = 0;
+                s1.push(ele);
+            }else{
+                if(s1.peek()>ele){
+                    ngr[i] = s1.peek();
+                    //don't push
+                    //this is the greatest on the left
+                }else{
+                    ngr[i] = 0;
+                    s1.push(ele);
+                }
+            }
         }
 
-        int sum=0;
+        // System.out.println();
+
+        // for(int i=0;i<n;i++){
+        //     System.out.print(ngr[i]+" ");
+        // }
+
+        int maxArea = 0;
+
 
         for(int i=0;i<n;i++){
-            sum+= Math.min(arrL[i],arrR[i])-arr[i];
+
+            int hgt = Math.min(ngl[i],ngr[i]);
+            if(hgt==0){
+                continue;
+            }else{
+                maxArea += hgt-height[i];
+            }
+
         }
 
-        return sum;
+
+        return maxArea;
     }
 }
