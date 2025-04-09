@@ -2,7 +2,6 @@ class Foo {
 
     Semaphore second;
     Semaphore third;
-
     public Foo() {
         second = new Semaphore(0);
         third = new Semaphore(0);
