@@ -1,51 +1,66 @@
 class Solution {
-
-    int dp[][];
     public int maximalSquare(char[][] matrix) {
-        int rows = matrix.length;
-        int cols = matrix[0].length;
+        int m = matrix.length;
+        int n = matrix[0].length;
 
-        dp = new int[rows][cols];
+        int dp[][] = new int[m][n];
 
-        for(int i=0;i<rows;i++){
+
+        for(int i=0;i<m;i++){
             Arrays.fill(dp[i],-1);
         }
 
-        dfs(0,0,rows,cols,matrix);
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
 
-        int maxVal = -1;
+                if(dp[i][j]==-1 && matrix[i][j]=='1'){
+                        dfs(i,j,matrix,dp);
+                }
 
-        for(int i=0;i<rows;i++){
-            for(int j=0;j<cols;j++){
-                maxVal = Math.max(maxVal,dp[i][j]);
             }
         }
 
-        return maxVal*maxVal;
-    
+        int maxArea = 0;
+
+
+
+    for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(dp[i][j]>0){
+                    int area = dp[i][j]*dp[i][j];
+                    maxArea = Math.max(maxArea,area);
+            }
+            }
+            System.out.println();
+        }
+
+    return maxArea;
+
+
     }
 
-    public int dfs(int i, int j, int rows, int cols, char[][] matrix){
+    public int dfs(int i, int j, char matrix[][], int dp[][]){
+        
+        int m = matrix.length;
+        int n = matrix[0].length;
+        if(i>=m || j>=n)
+            return 0;
 
-        if(i>=rows || j>=cols){
+        if(matrix[i][j]=='0'){
             return 0;
         }
+
 
         if(dp[i][j]!=-1){
             return dp[i][j];
         }
 
-        int right = dfs(i,j+1,rows,cols,matrix);
-        int down = dfs(i+1,j,rows,cols,matrix);
-        int diag = dfs(i+1,j+1,rows,cols,matrix);
+        dp[i][j]=0;
 
-        
-        dp[i][j] = 0;
-        if(matrix[i][j]=='1'){
-            dp[i][j] = 1 + Math.min(right, Math.min(down,diag));
-        }
+        dp[i][j] = 1+ Math.min(dfs(i+1,j,matrix,dp),Math.min(dfs(i+1,j+1,matrix,dp), dfs(i,j+1,matrix,dp)));
 
         return dp[i][j];
+
 
     }
 }
