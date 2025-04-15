@@ -1,108 +1,142 @@
 class Solution {
     public int maximalRectangle(char[][] matrix) {
         
+        //int arr[] = {3,1,3,2,2};
+
+        //int area = maxAreaOfhistogram(arr);
+        int maxArea =0;
+        //return area;
+
         int m = matrix.length;
         int n = matrix[0].length;
 
-        int heights[] = new int[n];
-        int maxArea = 0;
+        int arr[] = new int[n];
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
-
-                int ele = matrix[i][j]-'0';
-                if(ele==1){
-                    heights[j]+=1;
+                
+                if(matrix[i][j]=='1'){
+                    arr[j]=1+arr[j];
                 }else{
-                    heights[j] = 0;
+                    arr[j]=0;
                 }
-            }
-            maxArea = Math.max(maxArea,largestRectangleArea(heights));
 
+            }
+
+            int area = maxAreaOfhistogram(arr);
+            maxArea = Math.max(maxArea,area);
         }
 
         return maxArea;
+
     }
 
+    public int maxAreaOfhistogram(int arr[]){
 
-    public int largestRectangleArea(int[] heights) {
+        int n = arr.length;
+        //Calculate the index of NSL (Nearest smaller to left
+        System.out.println("The array is : ");
+        for(int i=0;i<n;i++){
+            System.out.print(arr[i]+" ");
+        }
+        System.out.println();
 
-        //storing indexes
-        List<Integer> smallestToLeft = new ArrayList<>();
+
         Stack<Pair> stack = new Stack<>();
-        for(int i=0;i<heights.length;i++){
+        ArrayList<Integer> nsl = new ArrayList<>();
+
+        for(int i=0;i<n;i++){
 
             if(stack.isEmpty()){
-                stack.add(new Pair(heights[i],i));
-                smallestToLeft.add(-1);
-            }else if(stack.peek().ele<heights[i]){
-                smallestToLeft.add(stack.peek().index);
+
+                nsl.add(-1);
+            }else if(stack.peek().ele<arr[i]){
+                nsl.add(stack.peek().index);
             }else{
-                while(!stack.isEmpty() && stack.peek().ele>=heights[i]){
+                //stack.peek().ele>=arr[i]
+
+                while(!stack.isEmpty() && stack.peek().ele>=arr[i]){
                     stack.pop();
                 }
-                if(stack.isEmpty()){
-                    //index of ele smallest to left
-                    smallestToLeft.add(-1);
-                }else{
-                    smallestToLeft.add(stack.peek().index);
 
+                //if stakc is empty then the smallest element is index -1
+                if(stack.isEmpty()){
+                    nsl.add(-1);
+                }else{
+                    //we found an element who height is smallest than arr[i]
+                    nsl.add(stack.peek().index);         
                 }
             }
 
-            stack.push(new Pair(heights[i],i));
+            stack.push(new Pair(arr[i],i));
 
         }
+
 
         stack.clear();
-         List<Integer> smallestToRight = new ArrayList<>();
+        ArrayList<Integer> nsr = new ArrayList<>();
+        //get the right one
 
-        for(int i=heights.length-1;i>=0;i--){
+        for(int i=n-1;i>=0;i--){
 
             if(stack.isEmpty()){
-                stack.add(new Pair(heights[i],i));
-                smallestToRight.add(heights.length);
-            }else if(stack.peek().ele<heights[i]){
-                smallestToRight.add(stack.peek().index);
+                nsr.add(n);
+            }else if(stack.peek().ele<arr[i]){
+                nsr.add(stack.peek().index);
             }else{
-                while(!stack.isEmpty() && stack.peek().ele>=heights[i]){
+                //stack.peek().ele>=arr[i]
+
+                while(!stack.isEmpty() && stack.peek().ele>=arr[i]){
                     stack.pop();
                 }
-                if(stack.isEmpty()){
-                    //index of ele smallest to left
-                    smallestToRight.add(heights.length);
-                }else{
-                    smallestToRight.add(stack.peek().index);
 
+                //if stakc is empty then the smallest element is index -1
+                if(stack.isEmpty()){
+                    nsr.add(n);
+                }else{
+                    //we found an element who height is smallest than arr[i]
+                    nsr.add(stack.peek().index);         
                 }
             }
 
-            stack.push(new Pair(heights[i],i));
+            stack.push(new Pair(arr[i],i));
 
         }
-        Collections.reverse(smallestToRight);
 
+        Collections.reverse(nsr);
+
+        //cal maxArea;
         int maxArea = 0;
 
-        int n = heights.length;
+        for(int i=0;i<n;i++){
+            System.out.print(nsl.get(i)+" ");
+        }
+        System.out.println();
+        for(int i=0;i<n;i++){
+            System.out.print(nsr.get(i)+" ");
+        }
 
-        for(int i=0;i<smallestToLeft.size();i++){
-            int lIdx = smallestToLeft.get(i)+1;
-            int rIdx = smallestToRight.get(i)-1;
+        System.out.println();
 
-            maxArea = Math.max(maxArea, heights[i]*(rIdx-lIdx+1));
+
+
+        for(int i=0;i<n;i++){
+            int leftIdx = nsl.get(i);
+            int rightIdx = nsr.get(i);
+            int area = arr[i]*(rightIdx-leftIdx-1);
+            maxArea = Math.max(maxArea,area);
 
         }
 
         return maxArea;
+
     }
 }
-
-
 class Pair{
+
     int ele;
     int index;
 
-    Pair(int ele,int index){
+    Pair(int ele, int index){
         this.ele = ele;
         this.index = index;
     }
