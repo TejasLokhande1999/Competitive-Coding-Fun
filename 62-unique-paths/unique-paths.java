@@ -1,36 +1,30 @@
 class Solution {
-    int dp[][];
     public int uniquePaths(int m, int n) {
-        
-        dp = new int[m][n];
 
-        for(int i=0;i<m;i++){
-            Arrays.fill(dp[i],-1);
+     int dp[][] = new int[m][n];
+     for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            dp[i][j] = -1;
         }
-        return dfs(0,0,m,n);
+     }
+
+     return dfs(0,0,m,n,dp);
+
     }
 
-    public int dfs(int i, int j, int m, int n){
+    public int dfs(int i, int j, int rows, int cols, int dp[][]){
+        if(i>=rows) return 0;
+        if(j>=cols) return 0;
 
-        if(i>=m){
-            return 0;
-        }
-
-        if(j>=n){
-            return 0;
-        }
-
-        if(i==m-1 && j==n-1){
+        if(i==rows-1 && j==cols-1)
             return 1;
-        }
-        if(dp[i][j]!=-1){
+
+        if(dp[i][j]!=-1)
             return dp[i][j];
-        }
 
-        int right = dfs(i,j+1,m,n);
-        int down = dfs(i+1,j,m,n);
+        dp[i][j] = dfs(i+1,j,rows,cols,dp) + dfs(i,j+1,rows,cols,dp);
 
-        return dp[i][j] = right + down;
+        return dp[i][j];
 
     }
 }
