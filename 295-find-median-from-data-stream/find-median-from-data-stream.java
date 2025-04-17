@@ -1,35 +1,37 @@
 class MedianFinder {
-    PriorityQueue<Integer> largeHeap;
+
     PriorityQueue<Integer> smallHeap;
+    PriorityQueue<Integer> largeHeap;
     public MedianFinder() {
-        smallHeap = new PriorityQueue<>(Collections.reverseOrder()); //this one is a max heap
-        largeHeap = new PriorityQueue<>(); //this one is a minheap
+        smallHeap = new PriorityQueue<>();
+        largeHeap = new PriorityQueue<>(Collections.reverseOrder());
     }
     
     public void addNum(int num) {
-        smallHeap.add(num);
-        if(smallHeap.size()-largeHeap.size()>1){
-            largeHeap.add(smallHeap.poll());
-        }else if(!largeHeap.isEmpty() && smallHeap.peek()>largeHeap.peek()){
-            largeHeap.add(smallHeap.poll());
-        }
+        largeHeap.add(num);
+
         if(largeHeap.size()-smallHeap.size()>1){
             smallHeap.add(largeHeap.poll());
         }
+        if(!smallHeap.isEmpty() && largeHeap.peek()>smallHeap.peek()){
+            int large = largeHeap.poll();
+            int small = smallHeap.poll();
+            largeHeap.add(small);
+            smallHeap.add(large);
+        }
+
     }
     
     public double findMedian() {
-
-        int size1 = smallHeap.size();
-        int size2 = largeHeap.size();
-        if(size1-size2==0){
-            int val1 = smallHeap.peek();
-            int val2 = largeHeap.peek();
-            return (double)(val1+val2)/2;
-        }else if(size1>size2){
-            return (double)smallHeap.peek();
+        if(largeHeap.size()>smallHeap.size()){
+            int ele = largeHeap.peek();
+            return (double) ele;
         }
-        return (double)largeHeap.peek();
+
+        double ele1 = (double) largeHeap.peek();
+        double ele2 = (double) smallHeap.peek();
+
+        return (double) (ele1+ele2)/2;
     }
 }
 
