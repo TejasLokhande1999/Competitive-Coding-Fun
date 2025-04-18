@@ -1,47 +1,55 @@
 class Solution {
+    class TrieNode{
+        Map<Character,TrieNode> map = new HashMap<>();
+        boolean isEof=false;
+    }
+
+    TrieNode root;
+
     public String longestCommonPrefix(String[] strs) {
-        
-        String minStr = strs[0];
+        root = new TrieNode();
+        Arrays.sort(strs);
+        for(String str : strs){
+            insert(str);
+        }
+        String smallestStr = strs[0];
 
-        for(int i=0;i<strs.length;i++){
-            if(strs[i].length()<minStr.length()){
-                minStr = strs[i];
+        String retStr = getLongestPrefix(smallestStr);
+
+        return retStr;
+    }
+
+
+    public void insert(String str){
+
+        TrieNode curr = root;
+
+        for(char ch : str.toCharArray()){
+
+            if(!curr.map.containsKey(ch)){
+                curr.map.put(ch, new TrieNode());
             }
+            curr = curr.map.get(ch);
         }
-
-
-    //we get the minimumn string
-    // Now build a new String based on each character of this minString in the array
-
-    String retStr="";
-
-    char ch;
-    for(int i=0;i<minStr.length();i++){
-        ch = minStr.charAt(i);
-        if(checkCharAtIndex(ch,i,strs)){
-            retStr+=ch;
-        }else{
-            return retStr;
-        }
-    }
-
-    return retStr;
-
+        curr.isEof = true;
 
     }
 
-    public boolean checkCharAtIndex(char ch, int index, String arr[]){
-        String str="";
-        for(int i=0;i<arr.length;i++){
-            str= arr[i];
-            if(str.charAt(index)==ch){
-                continue;
+    public String getLongestPrefix(String str){
+        TrieNode curr = root;
+        StringBuilder prefix = new StringBuilder();
+        for(char ch : str.toCharArray()){
+
+            if(curr.map.size()==1){
+                prefix.append(ch);
+                curr = curr.map.get(ch);
             }else{
-                return false;
+                return prefix.toString();
             }
+
         }
 
-        return true;
+        return prefix.toString();
 
     }
 }
