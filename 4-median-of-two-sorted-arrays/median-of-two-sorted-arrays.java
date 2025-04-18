@@ -1,106 +1,42 @@
 class Solution {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int n = nums1.length;
+        int m = nums2.length;
+        List<Integer> arr = new ArrayList<>();
+        int totalLgt = m + n;
+        int index = totalLgt / 2;
+        boolean isOdd = (totalLgt % 2 != 0);
 
-        // int k = nums1.length + nums2.length;
+        int count = 0;
+        int i = 0, j = 0;
 
-        // int i=0;
-        // int j=0;
-        // int n1 = nums1.length;
-        // int n2 = nums2.length;
-
-        // int index1 = (n1+n2)/2;
-        // int index2 = index1-1;      
-        // int ele1 = -1;
-        // int ele2 = -1;  
-
-        // int count=0;
-
-        // while(i<n1 && j<n2){
-
-        //     if(nums1[i]<nums2[j]){
-        //         if(count==index1){
-        //             ele1 = nums1[i];
-        //         }
-        //         if(count==index2){
-        //             ele2 = nums1[i];
-        //         }
-        //         i++;
-        //         count++;        
-        //     }else{
-        //         if(count==index1){
-        //             ele1 = nums2[j];
-        //         }
-        //         if(count==index2){
-        //             ele2 = nums2[j];
-        //         }
-        //         j++;
-        //         count++;        
-        //     }
-
-        // }
-
-        // while (i < n1) {
-        //     if (count == index1) ele1 = nums1[i];
-        //     if (count == index2) ele2 = nums1[i];
-        //     count++;
-        //     i++;
-        // }
-        // while (j < n2) {
-        //     if (count == index1) ele1 = nums2[j];
-        //     if (count == index2) ele2 = nums2[j];
-        //     count++;
-        //     j++;
-        // }
-
-        // if((n1+n2)%2==1){
-        //     return (double)ele1;
-        // }
-
-        // return (double)(ele1+ele2)/2;
-
-
-
-        int i=0;
-        int j=0;
-        int n1 = nums1.length;
-        int n2 = nums2.length;    
-                int arr[] = new int[n1+n2];
-
-
-    int k=0;
-        while(i<n1 && j<n2){
-
-            if(nums1[i]<=nums2[j]){
-                arr[k] = nums1[i];
-                i++;
-            }else{
-                arr[k]=nums2[j];
-                j++;
+        // Merge until we reach index (or index+1 in case of even)
+        while (i < n && j < m && count <= index) {
+            if (nums1[i] <= nums2[j]) {
+                arr.add(nums1[i++]);
+            } else {
+                arr.add(nums2[j++]);
             }
-            k++;
+            count++;
         }
 
-        while(i<n1){
-            arr[k]=nums1[i];
-            i++;
-            k++;
+        while (i < n && count <= index) {
+            arr.add(nums1[i++]);
+            count++;
         }
 
-        while(j<n2){
-            arr[k] = nums2[j];
-            j++;
-            k++;
+        while (j < m && count <= index) {
+            arr.add(nums2[j++]);
+            count++;
         }
 
-        if((n1+n2)%2==1){
-            return (double)arr[(n1+n2)/2];
-        }else{
-            int in = (n1+n2)/2;
-            return (double)(arr[in] +arr[in-1])/2;
-
+        double ans = 0;
+        if (isOdd) {
+            ans = arr.get(index);
+        } else {
+            ans = (arr.get(index - 1) + arr.get(index)) / 2.0;
         }
 
-
-
+        return ans;
     }
 }
