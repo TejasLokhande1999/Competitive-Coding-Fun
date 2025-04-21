@@ -1,31 +1,25 @@
 class Solution {
     public double myPow(double x, int n) {
-        
         if(x==0) return 0;
         if(n==0) return 1;
 
-        double res = helper(x,Math.abs(n));
+        double res = recurse(x,Math.abs((long) n));
 
-        if(n>=0){
-            return res;
-        }
+        if(n>=0) return res;
 
         return 1/res;
-
     }
 
-    public double helper(double x, int n){
-
+    public double recurse(double x, long n){
         if(n==0){
             return 1;
         }
+        double res = recurse(x,n/2);
 
-        double res = helper(x,n/2);     //get result of 2^5 and return res*res
-
-        if(n%2==0)
-            return res*res;
-        
-        return x*res*res;
+        if(n%2==1){
+            return x*res*res;
+        }
+        return res*res;
 
     }
 }
